@@ -1,0 +1,369 @@
+/* ============================================================
+   Taskstick 日事贴 官网样式
+   双主题：暗夜星图控制台（dark） / 白天工程图纸（light）
+   ============================================================ */
+
+/* ---------- 主题变量 ---------- */
+:root,
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #070b09;
+  --bg-elev: #0b120e;
+  --ink: rgba(232, 245, 238, .94);
+  --ink-dim: rgba(232, 245, 238, .60);
+  --ink-faint: rgba(232, 245, 238, .38);
+  --line: rgba(160, 220, 190, .14);
+  --line-strong: rgba(160, 220, 190, .38);
+  --accent: #3FCF8E;
+  --accent-dim: #2f9e6e;
+  --accent-deep: #14532d;
+  --accent-ink: #04110a;
+  --grid-line: rgba(255, 255, 255, .030);
+  --grid-line-strong: rgba(255, 255, 255, .055);
+  --glow: 0 0 14px rgba(63, 207, 142, .40);
+  --vignette: radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(0, 0, 0, .5) 100%);
+  --fx-fallback: radial-gradient(ellipse at 50% 45%, rgba(63, 207, 142, .10), transparent 62%);
+  --nav-bg: rgba(7, 11, 9, .72);
+  --hero-fade: linear-gradient(to top, rgba(7, 11, 9, .88), rgba(7, 11, 9, 0) 55%);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3f5f1;
+  --bg-elev: #fbfcfa;
+  --ink: #152019;
+  --ink-dim: rgba(21, 32, 25, .66);
+  --ink-faint: rgba(21, 32, 25, .42);
+  --line: rgba(20, 70, 45, .16);
+  --line-strong: rgba(20, 70, 45, .42);
+  --accent: #2E9E62;
+  --accent-dim: #267a4d;
+  --accent-deep: #bfe3d0;
+  --accent-ink: #ffffff;
+  --grid-line: rgba(20, 70, 45, .045);
+  --grid-line-strong: rgba(20, 70, 45, .085);
+  --glow: 0 0 10px rgba(46, 158, 98, .22);
+  --vignette: radial-gradient(ellipse at 50% 42%, transparent 60%, rgba(46, 80, 62, .07) 100%);
+  --fx-fallback: radial-gradient(ellipse at 50% 45%, rgba(46, 158, 98, .09), transparent 62%);
+  --nav-bg: rgba(243, 245, 241, .78);
+  --hero-fade: linear-gradient(to top, rgba(243, 245, 241, .92), rgba(243, 245, 241, 0) 55%);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --bg: #f3f5f1;
+    --bg-elev: #fbfcfa;
+    --ink: #152019;
+    --ink-dim: rgba(21, 32, 25, .66);
+    --ink-faint: rgba(21, 32, 25, .42);
+    --line: rgba(20, 70, 45, .16);
+    --line-strong: rgba(20, 70, 45, .42);
+    --accent: #2E9E62;
+    --accent-dim: #267a4d;
+    --accent-deep: #bfe3d0;
+    --accent-ink: #ffffff;
+    --grid-line: rgba(20, 70, 45, .045);
+    --grid-line-strong: rgba(20, 70, 45, .085);
+    --glow: 0 0 10px rgba(46, 158, 98, .22);
+    --vignette: radial-gradient(ellipse at 50% 42%, transparent 60%, rgba(46, 80, 62, .07) 100%);
+    --fx-fallback: radial-gradient(ellipse at 50% 45%, rgba(46, 158, 98, .09), transparent 62%);
+    --nav-bg: rgba(243, 245, 241, .78);
+    --hero-fade: linear-gradient(to top, rgba(243, 245, 241, .92), rgba(243, 245, 241, 0) 55%);
+  }
+}
+
+/* ---------- 基础 ---------- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+               "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color .45s ease, color .45s ease;
+}
+
+/* 全局细网格 + 暗角（HUD 语言，密度收敛） */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 480px 480px, 480px 480px;
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--vignette);
+}
+
+main, .hero, .nav, .footer { position: relative; z-index: 1; }
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+h1, h2, h3, h4 {
+  font-family: "Sora", "PingFang SC", -apple-system, sans-serif;
+  font-weight: 600; line-height: 1.3; letter-spacing: .01em;
+}
+
+/* ---------- 通用 HUD 标签 ---------- */
+.sec-tag {
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px; letter-spacing: .32em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 18px;
+}
+.sec-tag::before { content: "// "; color: var(--ink-faint); }
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-block; padding: 12px 26px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; letter-spacing: .12em;
+  text-decoration: none; border: 1px solid transparent;
+  transition: transform .25s cubic-bezier(.22, 1, .36, 1), box-shadow .25s ease,
+              background-color .25s ease, border-color .25s ease;
+}
+.btn-solid { background: var(--accent); color: var(--accent-ink); }
+.btn-solid:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+.btn-ghost { border-color: var(--line-strong); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.btn-lg { padding: 16px 40px; font-size: 14px; }
+
+/* ---------- 导航 ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  max-width: 1160px; margin: 0 auto; padding: 0 28px;
+  height: 58px; display: flex; align-items: center; gap: 28px;
+}
+.logo {
+  font-family: "Sora", "PingFang SC", sans-serif; font-weight: 700;
+  font-size: 18px; color: var(--ink); text-decoration: none; letter-spacing: .02em;
+}
+.logo-dot { color: var(--accent); }
+.logo-cn {
+  font-size: 11px; font-weight: 400; color: var(--ink-faint);
+  margin-left: 8px; letter-spacing: .2em;
+}
+.nav-links { display: flex; gap: 24px; margin-left: auto; }
+.nav-links a {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px; letter-spacing: .18em; color: var(--ink-dim);
+  text-decoration: none; transition: color .2s ease;
+}
+.nav-links a:hover { color: var(--accent); }
+.theme-toggle {
+  width: 34px; height: 34px; border: 1px solid var(--line-strong);
+  background: transparent; color: var(--ink); font-size: 15px; line-height: 1;
+  cursor: pointer; transition: border-color .2s ease, color .2s ease;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; min-height: 100svh;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
+#hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero::after { /* 底部淡出，衔接正文 */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 34%;
+  background: var(--hero-fade); pointer-events: none;
+}
+
+.hero-hud { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.hud-frame { position: absolute; inset: 18px; border: 1px solid var(--line); }
+.hud-frame::before, .hud-frame::after, .hud-frame .corner {
+  content: ""; position: absolute; width: 10px; height: 10px;
+  border: 1px solid var(--line-strong);
+}
+.hud-frame::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.hud-frame::after { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.hud-frame .c-bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.hud-frame .c-br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+.hud-tag {
+  position: absolute;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-faint); white-space: nowrap;
+}
+.hud-tag b { color: var(--ink-dim); font-weight: 400; }
+.tag-lt { top: 30px; left: 32px; }
+.tag-rt { top: 30px; right: 32px; }
+.tag-vertical {
+  top: 50%; left: 26px; transform: translateY(-50%);
+  writing-mode: vertical-rl; letter-spacing: .3em; font-size: 8px;
+}
+.tag-phase { bottom: 30px; right: 32px; letter-spacing: .26em; }
+.tag-phase b { color: var(--accent); text-shadow: var(--glow); }
+.hud-progress {
+  position: absolute; left: 18px; right: 18px; bottom: 18px; height: 1px;
+  background: var(--line);
+}
+.hud-progress i {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+  box-shadow: var(--glow);
+}
+
+.hero-content {
+  position: relative; z-index: 3;
+  max-width: 1160px; width: 100%; margin: 0 auto;
+  padding: 0 64px 14vh;
+}
+.hero-content h1 {
+  font-size: clamp(38px, 6vw, 64px); font-weight: 700; letter-spacing: .02em;
+}
+.lede {
+  margin-top: 14px; font-size: clamp(16px, 2.2vw, 21px); color: var(--ink-dim);
+  font-family: "Sora", "PingFang SC", sans-serif;
+}
+.hero-desc { margin-top: 20px; max-width: 560px; font-size: 14px; color: var(--ink-faint); }
+.cta-row { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-note {
+  margin-top: 20px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px; letter-spacing: .22em; color: var(--ink-faint);
+}
+.hero-note::before { content: "●"; color: var(--accent); margin-right: 8px; font-size: 8px; }
+
+/* ---------- Section 通用 ---------- */
+.section { max-width: 1160px; margin: 0 auto; padding: 110px 28px 0; }
+.section-head { text-align: left; }
+.section-head h2, .philosophy h2, .download h2 { font-size: clamp(28px, 4vw, 42px); }
+.sec-desc { margin-top: 14px; max-width: 560px; color: var(--ink-dim); }
+
+/* ---------- 功能区块 ---------- */
+.feature {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: center;
+}
+.feature--flip .feature-copy { order: 2; }
+.feature--flip .fx-wrap { order: 1; }
+.feature-copy h3 { font-size: clamp(22px, 3vw, 30px); margin-bottom: 16px; }
+.feature-copy > p { color: var(--ink-dim); font-size: 15px; }
+.spec-list { margin-top: 22px; list-style: none; border-top: 1px solid var(--line); }
+.spec-list li {
+  padding: 9px 0 9px 20px; position: relative;
+  font-size: 13.5px; color: var(--ink-dim);
+  border-bottom: 1px solid var(--line);
+}
+.spec-list li::before {
+  content: ""; position: absolute; left: 2px; top: 17px;
+  width: 6px; height: 6px; border: 1px solid var(--accent);
+}
+.spec-sources li { display: flex; align-items: center; gap: 4px; padding-left: 8px; }
+.spec-sources li::before { display: none; }
+.spec-sources .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--c); display: inline-block; margin-right: 10px;
+  box-shadow: 0 0 6px var(--c);
+}
+
+.fx-wrap {
+  position: relative; aspect-ratio: 4 / 3;
+  border: 1px solid var(--line);
+  background: var(--fx-fallback), var(--bg-elev);
+  overflow: hidden;
+}
+.fx-wrap::before, .fx-wrap::after {
+  content: ""; position: absolute; width: 10px; height: 10px; z-index: 2;
+  border: 1px solid var(--line-strong); pointer-events: none;
+}
+.fx-wrap::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.fx-wrap::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+.fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.fx-label {
+  position: absolute; left: 12px; bottom: 10px; z-index: 2;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .22em; color: var(--ink-faint);
+  pointer-events: none;
+}
+
+/* ---------- 理念区 ---------- */
+.philosophy blockquote {
+  max-width: 860px;
+  font-family: "Sora", "PingFang SC", sans-serif;
+  font-size: clamp(22px, 3.4vw, 34px); font-weight: 600; line-height: 1.6;
+  border-left: 2px solid var(--accent); padding-left: 28px;
+}
+.principle-grid {
+  margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.principle {
+  border: 1px solid var(--line); padding: 26px 24px;
+  background: var(--bg-elev);
+  transition: border-color .3s ease, transform .3s ease;
+}
+.principle:hover { border-color: var(--accent); transform: translateY(-3px); }
+.p-no {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .3em; color: var(--accent); margin-bottom: 14px;
+}
+.principle h4 { font-size: 17px; margin-bottom: 8px; }
+.principle p:last-child { font-size: 13px; color: var(--ink-dim); }
+
+/* ---------- 下载区 ---------- */
+.download { text-align: center; padding-bottom: 130px; }
+.dl-row {
+  margin-top: 40px; display: flex; align-items: center; justify-content: center;
+  gap: 22px; flex-wrap: wrap;
+}
+.dl-ios {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px; letter-spacing: .14em; color: var(--ink-faint);
+  border: 1px dashed var(--line-strong); padding: 14px 22px;
+}
+.dl-note { margin-top: 24px; font-size: 13px; color: var(--ink-faint); }
+
+/* ---------- 页脚 ---------- */
+.footer { border-top: 1px solid var(--line); margin-top: 30px; }
+.footer-inner {
+  max-width: 1160px; margin: 0 auto; padding: 44px 28px;
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+  flex-wrap: wrap;
+}
+.f-slogan { margin-top: 6px; font-size: 13px; color: var(--ink-faint); }
+.f-meta { text-align: right; font-size: 12px; color: var(--ink-faint); }
+.f-icp { font-family: "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; }
+
+/* ---------- 滚动 reveal（仅 JS 可用时先隐藏，无 JS 时内容直接可见） ---------- */
+html.js .reveal {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity .8s ease var(--d, 0s),
+              transform .8s cubic-bezier(.22, 1, .36, 1) var(--d, 0s);
+}
+html.js .reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 860px) {
+  .feature { grid-template-columns: 1fr; gap: 30px; }
+  .feature--flip .feature-copy { order: 1; }
+  .feature--flip .fx-wrap { order: 2; }
+  .principle-grid { grid-template-columns: 1fr; }
+  .hero-content { padding: 0 34px 16vh; }
+  .tag-vertical, .tag-rt { display: none; }
+  .nav-inner { padding: 0 20px; }
+  .logo-cn { display: none; }
+  .section { padding: 84px 20px 0; }
+}
+
+/* ---------- 减少动态 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html.js .reveal { opacity: 1; transform: none; transition: none; }
+  .btn, .principle, .nav-links a, .theme-toggle { transition: none; }
+}

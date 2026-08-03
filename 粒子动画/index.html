@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Taskstick — Multi-Agent Constellation</title>
+<style>
+  :root{
+    --green: #6dffb0;
+    --green-dim: #2f9e6e;
+    --green-deep: #14532d;
+    --ink: rgba(255,255,255,.78);
+    --ink-dim: rgba(255,255,255,.38);
+    --line: rgba(255,255,255,.12);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:100%; height:100%; overflow:hidden; background:#000; }
+  body{
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "PingFang SC", "Microsoft YaHei", monospace;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    cursor: crosshair;
+  }
+  canvas#stage{ position:fixed; top:0; left:0; display:block; }
+
+  /* ---------- 背景细网格 ---------- */
+  .bg-grid{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    background-image:
+      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px),
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 96px 96px, 96px 96px, 480px 480px, 480px 480px;
+  }
+  .vignette{
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    background: radial-gradient(ellipse at 50% 46%, transparent 46%, rgba(0,0,0,.55) 100%);
+  }
+
+  /* ---------- HUD 外框 ---------- */
+  .hud{ position:fixed; inset:0; pointer-events:none; z-index:5; }
+  .hud-frame{ position:absolute; inset:14px; border:1px solid var(--line); }
+  .hud-frame::before,.hud-frame::after,
+  .corner-bl,.corner-br{
+    content:""; position:absolute; width:10px; height:10px;
+    border:1px solid rgba(255,255,255,.55);
+  }
+  .hud-frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .hud-frame::after{ top:-1px; right:-1px; border-left:none; border-bottom:none; }
+  .corner-bl{ bottom:-1px; left:-1px; border-right:none; border-top:none; }
+  .corner-br{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  /* 上下标尺刻度 */
+  .ruler{
+    position:absolute; left:60px; right:60px; height:8px; opacity:.5;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.18) 0 1px, transparent 1px 12px);
+    background-size:100% 8px, 100% 4px;
+    background-position:bottom, bottom;
+    background-repeat:repeat-x;
+  }
+  .ruler.top{ top:20px; }
+  .ruler.bottom{ bottom:20px; transform:scaleY(-1); }
+
+  /* ---------- 文字标签 ---------- */
+  .tag{ position:absolute; font-size:9px; letter-spacing:.14em; color:var(--ink-dim); text-transform:uppercase; white-space:nowrap; }
+  .tag b{ color:var(--ink); font-weight:400; }
+  .tag-lt{ top:22px; left:26px; }
+  .tag-rt{ top:22px; right:26px; text-align:right; }
+  .tag-rb{ bottom:24px; right:26px; color:rgba(255,255,255,.5); }
+  .tag-center-top{ top:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.45); }
+  .tag-bottom-center{ bottom:26px; left:50%; transform:translateX(-50%); letter-spacing:.34em; color:rgba(255,255,255,.32); }
+  .tag-vertical{
+    top:50%; left:20px; transform:translateY(-50%);
+    writing-mode:vertical-rl; letter-spacing:.3em; font-size:8px;
+    color:rgba(255,255,255,.30);
+  }
+  .hint{
+    position:absolute; top:44px; left:50%; transform:translateX(-50%);
+    font-size:10px; letter-spacing:.22em; color:var(--green);
+    text-shadow:0 0 8px rgba(109,255,176,.55);
+    display:flex; align-items:center; gap:8px;
+  }
+  .hint::before{
+    content:""; width:5px; height:5px; border-radius:50%;
+    background:var(--green); box-shadow:0 0 8px var(--green);
+    animation: blink 1.6s infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.25} }
+
+  /* ---------- 左上数据面板 ---------- */
+  .panel-tl{
+    position:absolute; top:52px; left:34px; min-width:210px;
+    border-top:1px solid var(--line); padding-top:8px;
+  }
+  .panel-tl h1{
+    font-size:15px; font-weight:500; letter-spacing:.30em; color:var(--ink);
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .panel-tl h1 small{ font-size:9px; color:var(--ink-dim); letter-spacing:.1em; }
+  .mini-rows{ margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:3px 18px; }
+  .mini-rows span{ font-size:8px; letter-spacing:.08em; color:rgba(255,255,255,.30); display:flex; justify-content:space-between; }
+  .mini-rows span i{ font-style:normal; color:rgba(255,255,255,.52); }
+
+  /* ---------- 左中节点信息 ---------- */
+  .node-readout{
+    position:absolute; left:34px; top:58%;
+    font-size:9px; letter-spacing:.12em; color:var(--ink-dim); line-height:1.9;
+  }
+  .node-readout .nid{ color:var(--ink); border:1px solid var(--line); padding:1px 6px; display:inline-block; margin-bottom:6px; }
+  .node-readout .val{ color:var(--green-dim); font-size:11px; letter-spacing:.18em; }
+
+  /* ---------- 右上 GESTURE TRACKING ---------- */
+  .gesture{
+    position:absolute; top:52px; right:34px; width:150px; height:74px;
+    border:1px solid var(--line); padding:6px 8px;
+    font-size:8px; letter-spacing:.14em; color:var(--ink-dim);
+  }
+  .gesture .g-title{ display:flex; justify-content:space-between; }
+  .gesture .g-view{
+    margin-top:5px; height:32px; border:1px solid rgba(255,255,255,.08);
+    position:relative; overflow:hidden;
+    background:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px) 0 0/8px 8px,
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px) 0 0/8px 8px;
+  }
+  .gesture .g-dot{
+    position:absolute; width:10px; height:10px; border:1px solid var(--green);
+    border-radius:50%; transform:translate(-50%,-50%);
+    box-shadow:0 0 6px rgba(109,255,176,.6);
+    left:50%; top:50%;
+  }
+  .gesture .g-dot::after{
+    content:""; position:absolute; left:50%; top:50%; width:2px; height:2px;
+    background:var(--green); transform:translate(-50%,-50%);
+  }
+  .gesture .g-info{ margin-top:4px; display:flex; justify-content:space-between; color:rgba(109,255,176,.7); }
+
+  /* ---------- 右侧坐标 ---------- */
+  .coords{
+    position:absolute; right:34px; top:38%;
+    font-size:8px; letter-spacing:.12em; color:rgba(255,255,255,.34);
+    text-align:right; line-height:2.1;
+  }
+  .coords i{ font-style:normal; color:rgba(255,255,255,.6); }
+
+  /* ---------- 底部阶段指示 ---------- */
+  .phase{
+    position:absolute; left:34px; bottom:26px;
+    font-size:9px; letter-spacing:.26em; color:rgba(255,255,255,.5);
+  }
+  .phase b{ color:var(--green); font-weight:400; text-shadow:0 0 6px rgba(109,255,176,.5); }
+  .progress{
+    position:absolute; left:0; bottom:14px; height:1px; width:100%;
+    background:rgba(255,255,255,.07);
+  }
+  .progress i{
+    position:absolute; left:0; top:0; bottom:0; width:0%;
+    background:linear-gradient(90deg, var(--green-deep), var(--green));
+    box-shadow:0 0 6px rgba(109,255,176,.5);
+  }
+
+  /* ---------- 节点详情面板（推近时弹出） ---------- */
+  .detail{
+    position:fixed; z-index:6; right:6.5%; top:50%;
+    width:min(320px, 78vw);
+    transform:translate(40px,-50%);
+    opacity:0; pointer-events:none;
+    transition: opacity .55s ease, transform .55s cubic-bezier(.22,1,.36,1);
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(1,4,3,.86);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding:18px 20px 14px;
+  }
+  .detail.show{ opacity:1; transform:translate(0,-50%); }
+  .detail::before{
+    content:""; position:absolute; left:-1px; top:14px; bottom:14px; width:2px;
+    background:var(--green); box-shadow:0 0 8px rgba(109,255,176,.7);
+  }
+  .d-title{ font-size:15px; letter-spacing:.06em; color:#eafff3; font-weight:500; }
+  .d-title span{ color:var(--ink-dim); font-size:12px; letter-spacing:.12em; }
+  .d-sub{ margin-top:5px; font-size:9px; letter-spacing:.18em; color:var(--green-dim); }
+  .d-sec{ margin-top:16px; }
+  .d-label{
+    font-size:8px; letter-spacing:.3em; color:rgba(255,255,255,.35);
+    border-bottom:1px solid rgba(255,255,255,.10); padding-bottom:5px; margin-bottom:8px;
+  }
+  .d-list{ list-style:none; }
+  .d-list li{
+    font-size:10.5px; color:rgba(255,255,255,.88); line-height:2.05;
+    display:flex; gap:10px; align-items:baseline;
+  }
+  .d-list li i{ font-style:normal; font-size:8px; color:var(--green); letter-spacing:.05em; }
+  .d-caps{ display:grid; grid-template-columns:1fr 1fr; gap:6px 14px; }
+  .d-caps span{
+    font-size:10px; color:rgba(255,255,255,.8);
+    border:1px solid rgba(255,255,255,.10); padding:4px 8px; text-align:center;
+    letter-spacing:.06em;
+  }
+  .d-resp{ font-size:10px; line-height:2.0; color:rgba(255,255,255,.72); text-align:justify; }
+  .d-foot{
+    margin-top:14px; padding-top:8px; border-top:1px solid rgba(255,255,255,.10);
+    font-size:8px; letter-spacing:.28em; color:rgba(255,255,255,.30);
+    display:flex; justify-content:space-between;
+  }
+  .d-foot i{ font-style:normal; color:var(--green-dim); }
+
+  /* ---------- 焦点节点光环 ---------- */
+  .ring{
+    position:fixed; z-index:4; width:86px; height:86px;
+    transform:translate(-50%,-50%);
+    border:1px solid rgba(109,255,176,.85);
+    border-radius:50%;
+    box-shadow:0 0 18px rgba(109,255,176,.35), inset 0 0 12px rgba(109,255,176,.18);
+    opacity:0; transition:opacity .4s ease;
+    pointer-events:none;
+    animation: spin 7s linear infinite;
+  }
+  .ring::before,.ring::after{
+    content:""; position:absolute; background:rgba(109,255,176,.9);
+  }
+  .ring::before{ left:50%; top:-14px; width:1px; height:9px; }
+  .ring::after{ left:50%; bottom:-14px; width:1px; height:9px; }
+  .ring.show{ opacity:1; }
+  @keyframes spin{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+  .ring-label{
+    position:fixed; z-index:4;
+    transform:translate(14px,-50%);
+    font-size:9px; letter-spacing:.2em; color:var(--green);
+    text-shadow:0 0 8px rgba(109,255,176,.6);
+    opacity:0; transition:opacity .4s ease; pointer-events:none;
+  }
+  .ring-label.show{ opacity:1; }
+
+  /* ---------- 跟随准星 ---------- */
+  .cross{
+    position:fixed; z-index:8; width:30px; height:30px;
+    transform:translate(-50%,-50%); pointer-events:none; opacity:.7;
+  }
+  .cross::before,.cross::after{ content:""; position:absolute; background:rgba(255,255,255,.55); }
+  .cross::before{ left:50%; top:0; width:1px; height:100%; transform:translateX(-.5px); }
+  .cross::after{ top:50%; left:0; height:1px; width:100%; transform:translateY(-.5px); }
+  .cross i{
+    position:absolute; left:50%; top:50%; width:4px; height:4px;
+    transform:translate(-50%,-50%); border-radius:50%;
+    background:var(--green); box-shadow:0 0 6px var(--green);
+  }
+  @media (pointer:coarse){ .cross{ display:none; } }
+
+  @media (max-width: 720px){
+    .coords,.node-readout,.panel-tl .mini-rows,.tag-center-top,.tag-rt{ display:none; }
+    .panel-tl{ min-width:0; }
+    .gesture{ width:118px; height:64px; }
+    .detail{ right:50%; transform:translate(50%,-50%) translateY(40px); top:auto; bottom:9%; }
+    .detail.show{ transform:translate(50%,-50%) translateY(0); }
+  }
+</style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div class="bg-grid"></div>
+  <div class="vignette"></div>
+
+  <div class="hud">
+    <div class="hud-frame"><span class="corner-bl"></span><span class="corner-br"></span></div>
+    <div class="ruler top"></div>
+    <div class="ruler bottom"></div>
+
+    <div class="tag tag-lt"><b>TASKSTICK</b> LAB&nbsp;&nbsp;GRAPH 2026</div>
+    <div class="tag tag-rt">MULTI-AGENT&nbsp;&nbsp;<b>DATA SERVICE</b></div>
+    <div class="tag tag-center-top">BUILD BY TASKSTICK</div>
+    <div class="tag tag-rb">@Taskstick</div>
+    <div class="tag tag-vertical">TASK / DECOMPOSE / SCHEDULE / EXECUTE / EVALUATE</div>
+    <div class="tag tag-bottom-center">INFORMATION&nbsp;&nbsp;EXCHANGE</div>
+
+    <div class="hint">指向核心节点查看详情</div>
+
+    <div class="panel-tl">
+      <h1>TASKSTICK <small>&lt;</small></h1>
+      <div class="mini-rows" id="miniRows"></div>
+    </div>
+
+    <div class="node-readout">
+      <span class="nid">NODE 0x2F // PLANNER CORE</span><br/>
+      RIGHT ASCENSION&nbsp;&nbsp;23h 06m 28.23s<br/>
+      DECLINATION&nbsp;&nbsp;-05° 02' 29.5"<br/>
+      MAGNITUDE<br/>
+      <span class="val" id="magVal">0.026 ± 0.009 M</span>
+    </div>
+
+    <div class="gesture">
+      <div class="g-title"><span>GESTURE TRACKING</span><span>●</span></div>
+      <div class="g-view"><div class="g-dot" id="gDot"></div></div>
+      <div class="g-info"><span id="gInfo">INFO 100%</span><span id="gXY">0,0</span></div>
+    </div>
+
+    <div class="coords" id="coords"></div>
+
+    <div class="phase" id="phase"><b>01</b>&nbsp;&nbsp;/ CONSTELLATION</div>
+    <div class="progress"><i id="progBar"></i></div>
+  </div>
+
+  <div class="detail" id="detail">
+    <div class="d-title">Planner <span>/ 规划中枢</span></div>
+    <div class="d-sub">维护任务拆解 · 依赖编排 · 进度追踪</div>
+
+    <div class="d-sec">
+      <div class="d-label">CURRENT PROGRESS</div>
+      <ul class="d-list">
+        <li><i>01</i>正在拆解目标为可执行子任务</li>
+        <li><i>02</i>正在同步各 Agent 的任务状态</li>
+        <li><i>03</i>正在合并来自 Executor 的中间结果</li>
+        <li><i>04</i>正在为 Evaluator 提供可追溯记录</li>
+      </ul>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-label">CAPABILITIES</div>
+      <div class="d-caps">
+        <span>任务拆解</span><span>依赖编排</span>
+        <span>进度追踪</span><span>优先级调度</span>
+        <span>上下文同步</span><span>异常重试</span>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-label">RESPONSIBILITY</div>
+      <p class="d-resp">Planner 是 Taskstick 多智能体协作中的调度核心。它负责把模糊目标拆解为有序任务图，维护节点之间的依赖与上下文，让不同 Agent 基于同一份状态持续工作。</p>
+    </div>
+
+    <div class="d-foot"><span>EXCHANGE</span><i>↑↓ SYNCED</i></div>
+  </div>
+
+  <div class="ring" id="ring"></div>
+  <div class="ring-label" id="ringLabel">PLANNER — CORE NODE</div>
+  <div class="cross" id="cross"><i></i></div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* ================= 基础场景 ================= */
+const canvas = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+scene.fog = new THREE.FogExp2(0x000000, 0.0028);
+
+const camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 1, 1000);
+const CAM_HOME = new THREE.Vector3(0, 0, 150);
+camera.position.copy(CAM_HOME);
+
+/* ================= 粒子参数 ================= */
+const N = 1200;                 // 节点总数
+const FOCUS = 0;                // 核心节点索引
+let aspect = innerWidth/innerHeight;
+const FOV_TAN = Math.tan(THREE.MathUtils.degToRad(55/2));
+const visWidth = () => 2*CAM_HOME.z*FOV_TAN*aspect;   // 相机处的可视世界宽度
+
+// 每粒子静态属性
+const basePos   = new Float32Array(N*3);  // 星图散布基准位置
+const driftAmp  = new Float32Array(N);
+const driftFreq = new Float32Array(N);
+const driftPhs  = new Float32Array(N*3);
+const aColor    = new Float32Array(N*3);
+const aSizeBase = new Float32Array(N);
+const aAlphaBase= new Float32Array(N);
+
+const cDeep  = new THREE.Color(0x0e3d28);
+const cMid   = new THREE.Color(0x2f9e6e);
+const cLight = new THREE.Color(0x7dffb0);
+const cStar  = new THREE.Color(0xeafff3);
+
+function gauss(){ // 近似高斯
+  return (Math.random()+Math.random()+Math.random()-1.5)*0.8165;
+}
+
+for(let i=0;i<N;i++){
+  // 扁平椭球状星团分布
+  basePos[i*3]   = gauss()*46;
+  basePos[i*3+1] = gauss()*30;
+  basePos[i*3+2] = gauss()*16;
+
+  driftAmp[i]  = 1.2 + Math.random()*3.2;
+  driftFreq[i] = 0.12 + Math.random()*0.35;
+  driftPhs[i*3]   = Math.random()*Math.PI*2;
+  driftPhs[i*3+1] = Math.random()*Math.PI*2;
+  driftPhs[i*3+2] = Math.random()*Math.PI*2;
+
+  const r = Math.random();
+  let c, s, a;
+  if(r < 0.18){      c = cDeep;  s = 1.0+Math.random()*1.6; a = 0.55; }
+  else if(r < 0.78){ c = cMid.clone().offsetHSL((Math.random()-0.5)*0.05, 0, (Math.random()-0.5)*0.12); s = 1.4+Math.random()*2.2; a = 0.85; }
+  else if(r < 0.93){ c = cLight; s = 2.0+Math.random()*2.4; a = 1.0; }
+  else {             c = cStar;  s = 3.2+Math.random()*3.6; a = 1.0; }
+
+  aColor[i*3]=c.r; aColor[i*3+1]=c.g; aColor[i*3+2]=c.b;
+  aSizeBase[i]=s; aAlphaBase[i]=a;
+}
+// 核心节点：更大、更亮，位置固定在星团中上部
+aSizeBase[FOCUS]=10; aAlphaBase[FOCUS]=1;
+aColor[FOCUS*3]=cLight.r; aColor[FOCUS*3+1]=cLight.g; aColor[FOCUS*3+2]=cLight.b;
+basePos[FOCUS*3]=14; basePos[FOCUS*3+1]=6; basePos[FOCUS*3+2]=4;
+
+/* ================= 文字采样：Taskstick ================= */
+function sampleText(text, maxPts){
+  const cw=1500, ch=380;
+  const cv=document.createElement('canvas'); cv.width=cw; cv.height=ch;
+  const x=cv.getContext('2d');
+  let fs=300;
+  x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle';
+  x.font=`700 ${fs}px Arial, Helvetica, sans-serif`;
+  while(x.measureText(text).width > cw-60 && fs>40){
+    fs-=8;
+    x.font=`700 ${fs}px Arial, Helvetica, sans-serif`;
+  }
+  const measured = x.measureText(text).width;
+  x.fillText(text, cw/2, ch/2+8);
+  const data=x.getImageData(0,0,cw,ch).data;
+  const pts=[];
+  const step=5;
+  for(let py=0;py<ch;py+=step){
+    for(let px=0;px<cw;px+=step){
+      if(data[(py*cw+px)*4+3] > 120){
+        pts.push([px-cw/2 + (Math.random()-0.5)*2, -(py-ch/2) + (Math.random()-0.5)*2]);
+      }
+    }
+  }
+  // 洗牌后限量
+  for(let i=pts.length-1;i>0;i--){ const j=(Math.random()*(i+1)|0); [pts[i],pts[j]]=[pts[j],pts[i]]; }
+  return { raw: pts.slice(0, maxPts), measured };
+}
+const textSample = sampleText('Taskstick', 980);
+const N_TEXT = textSample.raw.length;
+
+/* ================= 队形目标位置 ================= */
+const gridTarget = new Float32Array(N*3);
+const textTarget = new Float32Array(N*3);
+const gridCol    = new Int32Array(N);
+let   textEdges  = [];
+
+/* ================= 连线拓扑（三种状态各一套） ================= */
+function dedupEdges(list){
+  const seen=new Set(), out=[];
+  for(const [a,b] of list){
+    const k=a<b? a*N+b : b*N+a;
+    if(!seen.has(k)){ seen.add(k); out.push([a,b]); }
+  }
+  return out;
+}
+// 星图：每个节点连最近的 2 个邻居
+const scatterEdges = (()=>{
+  const list=[];
+  for(let i=0;i<N;i++){
+    const xi=basePos[i*3], yi=basePos[i*3+1], zi=basePos[i*3+2];
+    let b1=-1,b2=-1,d1=1e9,d2=1e9;
+    for(let j=0;j<N;j++){
+      if(j===i) continue;
+      const dx=basePos[j*3]-xi, dy=basePos[j*3+1]-yi, dz=basePos[j*3+2]-zi;
+      const d=dx*dx+dy*dy+dz*dz;
+      if(d<d1){ d2=d1; b2=b1; d1=d; b1=j; }
+      else if(d<d2){ d2=d; b2=j; }
+    }
+    if(b1>=0) list.push([i,b1]);
+    if(b2>=0) list.push([i,b2]);
+  }
+  return dedupEdges(list);
+})();
+// 网格：连接右、下邻居
+const gridEdges = (()=>{
+  const cols=44, list=[];
+  for(let i=0;i<N;i++){
+    if((i+1)%cols!==0 && i+1<N) list.push([i,i+1]);
+    if(i+cols<N) list.push([i,i+cols]);
+  }
+  return list;
+})();
+
+// 网格 / 文字队形：按当前可视宽度计算，窗口变化时可重建
+function buildFormations(){
+  // 网格队形
+  const cols=44, rows=Math.ceil(N/cols);
+  const sp=Math.min(4.6, visWidth()*0.86/cols);
+  for(let i=0;i<N;i++){
+    const col=i%cols, row=(i/cols)|0;
+    gridCol[i]=col;
+    gridTarget[i*3]  =(col-(cols-1)/2)*sp;
+    gridTarget[i*3+1]=((rows-1)/2-row)*sp;
+    gridTarget[i*3+2]=(Math.random()-0.5)*0.6;
+  }
+  // 文字队形：前 N_TEXT 个粒子组成字形，其余退到远景
+  const s=Math.min(195, visWidth()*0.76)/textSample.measured;
+  for(let i=0;i<N;i++){
+    if(i<N_TEXT){
+      textTarget[i*3]  =textSample.raw[i][0]*s;
+      textTarget[i*3+1]=textSample.raw[i][1]*s;
+      textTarget[i*3+2]=(Math.random()-0.5)*1.5;
+    }else{
+      textTarget[i*3]  =basePos[i*3]*1.7;
+      textTarget[i*3+1]=basePos[i*3+1]*1.7;
+      textTarget[i*3+2]=basePos[i*3+2]*1.7-60;
+    }
+  }
+  // 文字连线：相邻采样点互连
+  const maxD=s*14, list=[];
+  for(let i=0;i<N_TEXT;i++){
+    let best=-1, bd=maxD*maxD;
+    const xi=textTarget[i*3], yi=textTarget[i*3+1];
+    for(let j=0;j<N_TEXT;j++){
+      if(j===i) continue;
+      const dx=textTarget[j*3]-xi, dy=textTarget[j*3+1]-yi;
+      const d=dx*dx+dy*dy;
+      if(d<bd){ bd=d; best=j; }
+    }
+    if(best>=0) list.push([i,best]);
+  }
+  textEdges=dedupEdges(list);
+}
+buildFormations();
+
+/* ================= Three.js 几何体 ================= */
+const pos    = new Float32Array(N*3);   // 当前帧位置
+const snap   = new Float32Array(N*3);   // 阶段切换快照
+const aSize  = new Float32Array(N);
+const aAlpha = new Float32Array(N);
+pos.set(basePos);
+aSize.set(aSizeBase);
+aAlpha.set(aAlphaBase);
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+geo.setAttribute('aColor',   new THREE.BufferAttribute(aColor,3));
+geo.setAttribute('aSize',    new THREE.BufferAttribute(aSize,1));
+geo.setAttribute('aAlpha',   new THREE.BufferAttribute(aAlpha,1));
+
+const pointsMat = new THREE.ShaderMaterial({
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  vertexShader:`
+    attribute float aSize;
+    attribute vec3 aColor;
+    attribute float aAlpha;
+    varying vec3 vColor;
+    varying float vAlpha;
+    void main(){
+      vColor=aColor; vAlpha=aAlpha;
+      vec4 mv = modelViewMatrix * vec4(position,1.0);
+      gl_PointSize = clamp(aSize * (260.0 / -mv.z), 1.0, 72.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader:`
+    varying vec3 vColor;
+    varying float vAlpha;
+    void main(){
+      vec2 uv = gl_PointCoord - 0.5;
+      float d = length(uv);
+      float core = smoothstep(0.42, 0.04, d);
+      float glow = smoothstep(0.5, 0.0, d) * 0.45;
+      float a = (core + glow) * vAlpha;
+      if(a < 0.012) discard;
+      gl_FragColor = vec4(vColor, a);
+    }`
+});
+scene.add(new THREE.Points(geo, pointsMat));
+
+// 连线
+const MAXE = Math.max(scatterEdges.length, gridEdges.length, textEdges.length);
+const linePos = new Float32Array(MAXE*6);
+const lineGeo = new THREE.BufferGeometry();
+lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos,3));
+const lineMat = new THREE.LineBasicMaterial({
+  color:0x2f8f5f, transparent:true, opacity:0.3,
+  blending:THREE.AdditiveBlending, depthWrite:false
+});
+const lines = new THREE.LineSegments(lineGeo, lineMat);
+scene.add(lines);
+
+/* ================= 时间轴（30s 循环） ================= */
+const TOTAL = 30;
+const TL = [
+  { id:'scatter',  a:0.0,  b:6.0,  no:'01', name:'CONSTELLATION'  },
+  { id:'zoom',     a:6.0,  b:7.4,  no:'02', name:'NODE INSPECT'   },
+  { id:'inspect',  a:7.4,  b:12.2, no:'02', name:'NODE INSPECT'   },
+  { id:'unzoom',   a:12.2, b:13.6, no:'02', name:'NODE INSPECT'   },
+  { id:'toGrid',   a:13.6, b:16.2, no:'03', name:'GRID SORT'      },
+  { id:'grid',     a:16.2, b:19.0, no:'03', name:'GRID SORT'      },
+  { id:'toText',   a:19.0, b:22.2, no:'04', name:'WORD FORMATION' },
+  { id:'text',     a:22.2, b:26.0, no:'04', name:'WORD FORMATION' },
+  { id:'disperse', a:26.0, b:28.6, no:'05', name:'DISPERSE'       },
+  { id:'settle',   a:28.6, b:30.0, no:'01', name:'CONSTELLATION'  },
+];
+const ease = t => t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+
+function phaseOf(t){
+  for(const p of TL) if(t>=p.a && t<p.b) return p;
+  return TL[TL.length-1];
+}
+
+/* ================= HUD 元素 ================= */
+const $ = id => document.getElementById(id);
+const phaseEl=$('phase'), progBar=$('progBar'), detail=$('detail'),
+      ring=$('ring'), ringLabel=$('ringLabel'), cross=$('cross'),
+      gDot=$('gDot'), gXY=$('gXY'), magVal=$('magVal');
+
+{ // 左上假数据行
+  const rows=$('miniRows'); let html='';
+  for(let i=0;i<8;i++){
+    const k=(Math.random()*90+5).toFixed(2), v=(Math.random()*9+1).toFixed(2);
+    html+=`<span>${k}<i>${v}</i></span>`;
+  }
+  rows.innerHTML=html;
+}
+{ // 右侧坐标
+  const el=$('coords'); let html='';
+  for(let i=0;i<6;i++){
+    const a=(Math.random()*23).toFixed(0).padStart(2,'0');
+    const b=(Math.random()*59).toFixed(1);
+    html+=`[${i}] ${a}h ${b}m &nbsp;<i>${(Math.random()*18-9).toFixed(2)}</i><br/>`;
+  }
+  el.innerHTML=html;
+}
+
+// 鼠标
+const mouse={x:0,y:0,cx:innerWidth/2,cy:innerHeight/2,tx:innerWidth/2,ty:innerHeight/2};
+addEventListener('pointermove', e=>{
+  mouse.x=(e.clientX/innerWidth-0.5)*2;
+  mouse.y=(e.clientY/innerHeight-0.5)*2;
+  mouse.tx=e.clientX; mouse.ty=e.clientY;
+  gXY.textContent=`${e.clientX},${e.clientY}`;
+  gDot.style.left=`${30+mouse.x*22}%`;
+  gDot.style.top =`${50+mouse.y*28}%`;
+});
+
+/* ================= 主循环 ================= */
+let curPhase=null;
+const clock={start:performance.now()};
+const tmpV=new THREE.Vector3(), focusV=new THREE.Vector3();
+const lookCur=new THREE.Vector3(), lookTarget=new THREE.Vector3();
+
+function scatterDynamic(i, t){
+  const o=i*3, a=driftAmp[i], f=driftFreq[i];
+  tmp[0]= basePos[o]  + Math.sin(t*f      + driftPhs[o])  *a;
+  tmp[1]= basePos[o+1]+ Math.sin(t*f*1.13 + driftPhs[o+1])*a;
+  tmp[2]= basePos[o+2]+ Math.sin(t*f*0.87 + driftPhs[o+2])*a*0.6;
+}
+
+function tick(){
+  const t=((performance.now()-clock.start)/1000)%TOTAL;
+  const phase=phaseOf(t);
+  const p=(t-phase.a)/(phase.b-phase.a);
+
+  // 阶段切换 → 记录快照
+  if(phase!==curPhase){
+    snap.set(pos);
+    curPhase=phase;
+    phaseEl.innerHTML=`<b>${phase.no}</b>&nbsp;&nbsp;/ ${phase.name}`;
+    const inspecting = phase.id==='inspect';
+    detail.classList.toggle('show', inspecting);
+    ring.classList.toggle('show', inspecting);
+    ringLabel.classList.toggle('show', inspecting);
+  }
+  progBar.style.width=`${(t/TOTAL*100).toFixed(2)}%`;
+
+  // 本阶段位置目标 & 插值系数
+  let mixK=1, targetArr=null, mode='scatter';
+  switch(phase.id){
+    case 'toGrid':  mode='grid';  targetArr=gridTarget; mixK=ease(p); break;
+    case 'grid':    mode='grid';  targetArr=gridTarget; mixK=1; break;
+    case 'toText':  mode='text';  targetArr=textTarget; mixK=ease(p); break;
+    case 'text':    mode='text';  targetArr=textTarget; mixK=1; break;
+    case 'disperse':mode='scatter'; mixK=ease(p); break;
+    default:        mode='scatter'; mixK=1;
+  }
+
+  const inspecting = phase.id==='inspect' || (phase.id==='zoom'&&p>0.5) || (phase.id==='unzoom'&&p<0.5);
+
+  for(let i=0;i<N;i++){
+    const o=i*3;
+    let tx,ty,tz;
+    if(targetArr){ tx=targetArr[o]; ty=targetArr[o+1]; tz=targetArr[o+2]; }
+    else{
+      scatterDynamic(i,t);
+      tx=tmp[0]; ty=tmp[1]; tz=tmp[2];
+    }
+    pos[o]  = snap[o]  +(tx-snap[o])  *mixK;
+    pos[o+1]= snap[o+1]+(ty-snap[o+1])*mixK;
+    pos[o+2]= snap[o+2]+(tz-snap[o+2])*mixK;
+
+    // 透明度目标
+    let aT=aAlphaBase[i], sT=aSizeBase[i];
+    if(inspecting){ aT = (i===FOCUS)? 1 : aAlphaBase[i]*0.22; }
+    if(mode==='grid'){
+      aT = aAlphaBase[i]*0.9*(0.72+0.28*Math.sin(t*3 - gridCol[i]*0.4));
+      sT = aSizeBase[i]*0.85;
+    }
+    if(mode==='text'){
+      aT = (i<N_TEXT)? 1 : 0.05;
+      if(i<N_TEXT) sT = aSizeBase[i]*(1.1+0.15*Math.sin(t*2.2+i*0.7));
+    }
+    if(i===FOCUS && phase.id==='inspect'){
+      sT = aSizeBase[i]*(1.25+0.2*Math.sin(t*4));
+    }
+    aAlpha[i]+= (aT-aAlpha[i])*0.08;
+    aSize[i] += (sT-aSize[i]) *0.10;
+  }
+
+  // 连线：按阶段切换拓扑
+  let edges=scatterEdges, lineOp=0.30;
+  if(mode==='grid'){ edges=gridEdges; lineOp=0.26; }
+  else if(mode==='text'){ edges=textEdges; lineOp=0.20; }
+  if(inspecting) lineOp=0.10;
+  lineMat.opacity += (lineOp-lineMat.opacity)*0.07;
+
+  for(let e=0;e<edges.length;e++){
+    const a=edges[e][0]*3, b=edges[e][1]*3, o=e*6;
+    linePos[o]=pos[a];   linePos[o+1]=pos[a+1]; linePos[o+2]=pos[a+2];
+    linePos[o+3]=pos[b]; linePos[o+4]=pos[b+1]; linePos[o+5]=pos[b+2];
+  }
+  lineGeo.setDrawRange(0, edges.length*2);
+  lineGeo.attributes.position.needsUpdate=true;
+  geo.attributes.position.needsUpdate=true;
+  geo.attributes.aAlpha.needsUpdate=true;
+  geo.attributes.aSize.needsUpdate=true;
+
+  // 相机
+  focusV.set(pos[FOCUS*3], pos[FOCUS*3+1], pos[FOCUS*3+2]);
+  let camK=0;
+  if(phase.id==='zoom')        camK=ease(p);
+  else if(phase.id==='inspect')camK=1;
+  else if(phase.id==='unzoom') camK=1-ease(p);
+
+  const homeX=CAM_HOME.x+mouse.x*9, homeY=CAM_HOME.y-mouse.y*6;
+  tmpV.set(focusV.x*0.82+mouse.x*2, focusV.y*0.82-mouse.y*1.5, focusV.z+52);
+  camera.position.set(
+    homeX+(tmpV.x-homeX)*camK,
+    homeY+(tmpV.y-homeY)*camK,
+    CAM_HOME.z+(tmpV.z-CAM_HOME.z)*camK
+  );
+  lookTarget.set(focusV.x*camK, focusV.y*camK, focusV.z*camK);
+  lookCur.lerp(lookTarget, 0.12);
+  camera.lookAt(lookCur);
+
+  // 光环跟随核心节点（投屏）
+  if(ring.classList.contains('show')){
+    tmpV.copy(focusV).project(camera);
+    const sx=(tmpV.x*0.5+0.5)*innerWidth, sy=(-tmpV.y*0.5+0.5)*innerHeight;
+    ring.style.left=`${sx}px`; ring.style.top=`${sy}px`;
+    ringLabel.style.left=`${sx+44}px`; ringLabel.style.top=`${sy-44}px`;
+  }
+
+  // 准星平滑跟随
+  mouse.cx+=(mouse.tx-mouse.cx)*0.18;
+  mouse.cy+=(mouse.ty-mouse.cy)*0.18;
+  cross.style.left=`${mouse.cx}px`; cross.style.top=`${mouse.cy}px`;
+
+  // 读数微扰
+  if(((t*2)|0)!==((t*2-0.016)|0)){
+    magVal.textContent=`${(0.02+Math.random()*0.02).toFixed(3)} ± 0.00${(Math.random()*9)|0} M`;
+  }
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+const tmp=[0,0,0];
+
+let resizeTimer=null;
+addEventListener('resize', ()=>{
+  aspect=innerWidth/innerHeight;
+  camera.aspect=aspect;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(buildFormations, 250);   // 视口稳定后重建队形
+});
+
+tick();
+
+// 视口稳定后兜底重建一次（应对初始化时 innerWidth 未就绪的情况）
+setTimeout(()=>{
+  aspect=innerWidth/innerHeight;
+  camera.aspect=aspect;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  buildFormations();
+}, 350);
+</script>
+</body>
+</html>
