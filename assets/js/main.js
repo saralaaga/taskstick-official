@@ -1,3 +1,5 @@
+import './download.js';
+
 /* ============================================================
    main.js — 主题切换 / 滚动 reveal / 延迟初始化 canvas 层
    无依赖，可独立运行；hero.js 与 features.js 动态 import，

@@ -41,7 +41,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Taskstick 日事贴",
-  "operatingSystem": "macOS",
+  "operatingSystem": "macOS, Windows",
   "applicationCategory": "ProductivityApplication",
   "description": "本地优先的任务管理 × 笔记双引擎 macOS 应用。笔记驱动，任务自成。",
   "inLanguage": "zh-CN",
@@ -86,10 +86,10 @@
       笔记中的任务行自动成为真正的任务，经智能列表汇入你的一天。
     </p>
     <div class="cta-row reveal" style="--d:.32s">
-      <a class="btn btn-solid" href="#download">下载 macOS 版</a>
+      <a class="btn btn-solid js-primary-download" href="#download" data-download-label="hero">免费下载</a>
       <a class="btn btn-ghost" href="#features">了解功能</a>
     </div>
-    <p class="hero-note reveal" style="--d:.4s">本地优先 · 官方同步服务</p>
+    <p class="hero-note reveal" style="--d:.4s">macOS / Windows · 本地优先 · 官方同步服务</p>
   </div>
 </section>
 
@@ -265,12 +265,16 @@
   <section class="section download" id="download">
     <p class="sec-tag reveal">DOWNLOAD</p>
     <h2 class="reveal" style="--d:.08s">让今天的待办，各就各位。</h2>
-    <div class="dl-row reveal" style="--d:.16s">
-      <!-- TODO: 替换为真实下载地址 -->
-      <a class="btn btn-solid btn-lg" href="#" onclick="return false">下载 macOS 版</a>
-      <span class="dl-ios">iOS 版 · 规划中</span>
+    <p class="download-copy reveal" style="--d:.14s">优先匹配你的系统与常用架构；如果你使用 Intel Mac、Windows ARM 或其他设备，可以手动选择安装包。</p>
+    <div class="dl-row reveal" style="--d:.2s">
+      <a class="btn btn-solid btn-lg js-primary-download" href="#download" aria-describedby="download-note">
+        <span class="download-title">检测可用版本...</span>
+        <span class="download-meta">正在读取官方发布信息</span>
+      </a>
+      <button class="btn btn-ghost btn-lg download-switch" type="button" aria-expanded="false" aria-controls="download-options">其他版本</button>
     </div>
-    <p class="dl-note reveal" style="--d:.24s">macOS 桌面版（Tauri 构建） · 本地优先 · 官方同步服务</p>
+    <div class="download-options reveal" id="download-options" style="--d:.26s" hidden></div>
+    <p class="dl-note reveal" id="download-note" style="--d:.32s">macOS / Windows 桌面版 · 本地优先 · 官方同步服务</p>
   </section>
 </main>
 
