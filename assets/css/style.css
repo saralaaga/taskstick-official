@@ -3,6 +3,10 @@
    双主题：暗夜星图控制台（dark） / 白天工程图纸（light）
    ============================================================ */
 
+/* 中文字体：思源黑体 Noto Sans SC（Google Fonts CDN）
+   英文标题：Sora
+   等宽字体：IBM Plex Mono */
+
 /* ---------- 主题变量 ---------- */
 :root,
 html[data-theme="dark"] {
@@ -25,6 +29,7 @@ html[data-theme="dark"] {
   --fx-fallback: radial-gradient(ellipse at 50% 45%, rgba(63, 207, 142, .10), transparent 62%);
   --nav-bg: rgba(7, 11, 9, .72);
   --hero-fade: linear-gradient(to top, rgba(7, 11, 9, .88), rgba(7, 11, 9, 0) 55%);
+  --detail-bg: rgba(4, 10, 7, .88);
 }
 
 html[data-theme="light"] {
@@ -47,6 +52,7 @@ html[data-theme="light"] {
   --fx-fallback: radial-gradient(ellipse at 50% 45%, rgba(46, 158, 98, .09), transparent 62%);
   --nav-bg: rgba(243, 245, 241, .78);
   --hero-fade: linear-gradient(to top, rgba(243, 245, 241, .92), rgba(243, 245, 241, 0) 55%);
+  --detail-bg: rgba(255, 255, 255, .90);
 }
 
 @media (prefers-color-scheme: light) {
@@ -70,6 +76,7 @@ html[data-theme="light"] {
     --fx-fallback: radial-gradient(ellipse at 50% 45%, rgba(46, 158, 98, .09), transparent 62%);
     --nav-bg: rgba(243, 245, 241, .78);
     --hero-fade: linear-gradient(to top, rgba(243, 245, 241, .92), rgba(243, 245, 241, 0) 55%);
+    --detail-bg: rgba(255, 255, 255, .90);
   }
 }
 
@@ -81,8 +88,8 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
-               "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  font-family: "Noto Sans SC", "Sora", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+               "Microsoft YaHei", sans-serif;
   font-size: 16px;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
@@ -109,8 +116,12 @@ main, .hero, .nav, .footer { position: relative; z-index: 1; }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
-h1, h2, h3, h4 {
-  font-family: "Sora", "PingFang SC", -apple-system, sans-serif;
+h1, h2, h3, .philosophy blockquote {
+  font-family: "Noto Sans SC", "Sora", "PingFang SC", -apple-system, sans-serif;
+  font-weight: 600; line-height: 1.3; letter-spacing: .02em;
+}
+h4 {
+  font-family: "Noto Sans SC", "Sora", "PingFang SC", -apple-system, sans-serif;
   font-weight: 600; line-height: 1.3; letter-spacing: .01em;
 }
 
@@ -151,8 +162,12 @@ button.btn { appearance: none; border-radius: 0; }
   height: 58px; display: flex; align-items: center; gap: 28px;
 }
 .logo {
+  display: inline-flex; align-items: center; gap: 8px;
   font-family: "Sora", "PingFang SC", sans-serif; font-weight: 700;
   font-size: 18px; color: var(--ink); text-decoration: none; letter-spacing: .02em;
+}
+.logo-mark {
+  width: 22px; height: 22px; flex: 0 0 22px; display: block;
 }
 .logo-dot { color: var(--accent); }
 .logo-cn {
@@ -165,7 +180,7 @@ button.btn { appearance: none; border-radius: 0; }
   font-size: 12px; letter-spacing: .18em; color: var(--ink-dim);
   text-decoration: none; transition: color .2s ease;
 }
-.nav-links a:hover { color: var(--accent); }
+.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--accent); }
 .theme-toggle {
   width: 34px; height: 34px; border: 1px solid var(--line-strong);
   background: transparent; color: var(--ink); font-size: 15px; line-height: 1;
@@ -221,17 +236,88 @@ button.btn { appearance: none; border-radius: 0; }
   box-shadow: var(--glow);
 }
 
+/* ---------- INSPECT：焦点光环 + 标签 + 详情卡 ---------- */
+.node-ring {
+  position: absolute; z-index: 4; width: 86px; height: 86px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--accent); border-radius: 50%;
+  box-shadow: var(--glow);
+  opacity: 0; transition: opacity .4s ease;
+  pointer-events: none;
+  animation: hero-spin 7s linear infinite;
+}
+.node-ring::before, .node-ring::after {
+  content: ""; position: absolute; left: 50%; width: 1px; height: 9px;
+  background: var(--accent);
+}
+.node-ring::before { top: -14px; }
+.node-ring::after { bottom: -14px; }
+.node-ring.show { opacity: .9; }
+@keyframes hero-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.node-ring-label {
+  position: absolute; z-index: 4; transform: translate(14px, -50%);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .2em; color: var(--accent);
+  text-shadow: var(--glow); white-space: nowrap;
+  opacity: 0; transition: opacity .4s ease; pointer-events: none;
+}
+.node-ring-label.show { opacity: 1; }
+
+.node-detail {
+  position: absolute; z-index: 6; right: 5%; top: 50%;
+  width: min(320px, 78vw);
+  transform: translate(40px, -50%);
+  opacity: 0; pointer-events: none;
+  transition: opacity .55s ease, transform .55s cubic-bezier(.22, 1, .36, 1);
+  border: 1px solid var(--line-strong);
+  background: var(--detail-bg);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  padding: 18px 20px 14px;
+}
+.node-detail.show { opacity: 1; transform: translate(0, -50%); }
+.node-detail::before {
+  content: ""; position: absolute; left: -1px; top: 14px; bottom: 14px; width: 2px;
+  background: var(--accent); box-shadow: var(--glow);
+}
+.nd-item { display: none; }
+.nd-item.active { display: block; }
+.d-title { font-family: "Noto Sans SC", "Sora", "PingFang SC", sans-serif; font-size: 15px; font-weight: 600; }
+.d-title span { color: var(--ink-faint); font-size: 12px; font-weight: 400; }
+.d-sub {
+  margin-top: 5px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .18em; color: var(--accent-dim);
+}
+.d-list { margin-top: 12px; list-style: none; border-top: 1px solid var(--line); }
+.d-list li {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 5px 0; font-size: 12px; color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.d-list li i {
+  font-style: normal; flex: none; min-width: 44px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .08em; color: var(--accent);
+}
+.d-foot {
+  margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--line);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 8px; letter-spacing: .28em; color: var(--ink-faint);
+  display: flex; justify-content: space-between;
+}
+.d-foot i { font-style: normal; color: var(--accent-dim); }
+
 .hero-content {
   position: relative; z-index: 3;
   max-width: 1160px; width: 100%; margin: 0 auto;
   padding: 0 64px 14vh;
 }
 .hero-content h1 {
-  font-size: clamp(38px, 6vw, 64px); font-weight: 700; letter-spacing: .02em;
+  font-size: clamp(38px, 6vw, 64px); font-weight: 600; letter-spacing: .04em;
 }
 .lede {
   margin-top: 14px; font-size: clamp(16px, 2.2vw, 21px); color: var(--ink-dim);
-  font-family: "Sora", "PingFang SC", sans-serif;
+  font-family: "Noto Sans SC", "Sora", "PingFang SC", sans-serif;
 }
 .hero-desc { margin-top: 20px; max-width: 560px; font-size: 14px; color: var(--ink-faint); }
 .cta-row { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
@@ -298,7 +384,6 @@ button.btn { appearance: none; border-radius: 0; }
 /* ---------- 理念区 ---------- */
 .philosophy blockquote {
   max-width: 860px;
-  font-family: "Sora", "PingFang SC", sans-serif;
   font-size: clamp(22px, 3.4vw, 34px); font-weight: 600; line-height: 1.6;
   border-left: 2px solid var(--accent); padding-left: 28px;
 }
@@ -328,54 +413,81 @@ button.btn { appearance: none; border-radius: 0; }
   margin-top: 40px; display: flex; align-items: center; justify-content: center;
   gap: 22px; flex-wrap: wrap;
 }
-.js-primary-download { min-width: 230px; text-align: center; }
-.download-title, .download-meta { display: block; }
-.download-title { line-height: 1.25; }
-.download-meta {
-  margin-top: 6px; font-size: 10px; letter-spacing: .16em;
-  color: color-mix(in srgb, currentColor 72%, transparent);
+.download-grid {
+  margin: 34px auto 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  text-align: left;
 }
-.btn-solid .download-meta { color: color-mix(in srgb, var(--accent-ink) 68%, transparent); }
-.download-switch[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
-.download-options {
-  width: min(820px, calc(100vw - 40px));
-  margin: 26px auto 0;
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px; text-align: left;
+.download .download-grid {
+  width: min(1040px, 100%);
 }
-.download-options[hidden] { display: none; }
-.download-option {
-  display: grid; grid-template-columns: 1fr auto; gap: 8px 18px;
-  align-items: center; padding: 16px 18px;
+.download-card {
+  min-height: 292px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--bg-elev) 90%, transparent);
-  color: var(--ink); text-decoration: none;
+  color: var(--ink);
   transition: border-color .25s ease, transform .25s ease, background-color .25s ease;
 }
-.download-option:hover {
+.download-card:hover {
   transform: translateY(-2px);
   border-color: var(--accent);
   background: var(--bg-elev);
 }
-.download-option strong {
-  font-family: "Sora", "PingFang SC", sans-serif;
-  font-size: 15px; letter-spacing: .04em;
+.download-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
 }
-.download-option small {
-  color: var(--ink-faint);
+.download-group, .download-badge {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 10px; letter-spacing: .08em;
+  font-size: 10px;
+  letter-spacing: .14em;
+  white-space: nowrap;
 }
-.download-option .download-sha {
-  grid-column: 1 / -1;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
+.download-group { color: var(--accent); }
 .download-badge {
   border: 1px solid var(--line-strong);
   padding: 4px 8px;
+  color: var(--ink-dim);
+}
+.download-card h3 {
+  font-size: 18px;
+  letter-spacing: .02em;
+}
+.download-card p {
+  margin-top: 10px;
+  color: var(--ink-dim);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.download-facts {
+  margin-top: 18px;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.download-facts li {
+  min-height: 31px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-faint);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 10px; letter-spacing: .12em;
-  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+.download-link {
+  width: 100%;
+  margin-top: auto;
+  text-align: center;
+  padding-inline: 14px;
+  font-size: 11px;
+  white-space: normal;
 }
 .dl-ios {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -383,6 +495,90 @@ button.btn { appearance: none; border-radius: 0; }
   border: 1px dashed var(--line-strong); padding: 14px 22px;
 }
 .dl-note { margin-top: 24px; font-size: 13px; color: var(--ink-faint); }
+.dl-note.is-active, .download-status.is-active { color: var(--accent); }
+
+/* ---------- 下载中心页 ---------- */
+.download-page-main {
+  position: relative;
+  z-index: 1;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 128px 28px 0;
+}
+.download-hero {
+  max-width: 780px;
+  padding: 28px 0 18px;
+}
+.download-hero h1 {
+  font-size: clamp(38px, 6vw, 66px);
+  letter-spacing: .03em;
+}
+.download-hero-copy {
+  margin-top: 20px;
+  max-width: 650px;
+  color: var(--ink-dim);
+  font-size: 16px;
+}
+.download-board {
+  margin-top: 42px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 30px 0 34px;
+}
+.download-board-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.download-board-head .sec-tag { margin-bottom: 10px; }
+.download-board-head h2 {
+  font-size: clamp(24px, 3vw, 34px);
+}
+.download-board-head > p {
+  color: var(--ink-faint);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-align: right;
+}
+.download-board .download-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.download-board .download-card { min-height: 330px; }
+.download-status {
+  margin-top: 22px;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+.download-help {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.download-help article {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 18px;
+}
+.download-help span {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: .22em;
+  color: var(--accent);
+}
+.download-help h2 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+.download-help p {
+  margin-top: 8px;
+  color: var(--ink-dim);
+  font-size: 13px;
+}
 
 /* ---------- 页脚 ---------- */
 .footer { border-top: 1px solid var(--line); margin-top: 30px; }
@@ -404,6 +600,10 @@ html.js .reveal {
 html.js .reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ---------- 响应式 ---------- */
+@media (max-width: 1080px) {
+  .download-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 860px) {
   .feature { grid-template-columns: 1fr; gap: 30px; }
   .feature--flip .feature-copy { order: 1; }
@@ -414,7 +614,28 @@ html.js .reveal.in { opacity: 1; transform: translateY(0); }
   .nav-inner { padding: 0 20px; }
   .logo-cn { display: none; }
   .section { padding: 84px 20px 0; }
-  .download-options { grid-template-columns: 1fr; }
+  .download-page-main { padding: 104px 20px 0; }
+  .download-board-head {
+    display: block;
+  }
+  .download-board-head > p {
+    margin-top: 14px;
+    text-align: left;
+  }
+  .download-board .download-grid,
+  .download-grid,
+  .download-help {
+    grid-template-columns: 1fr;
+  }
+  .download-card,
+  .download-board .download-card {
+    min-height: 0;
+  }
+  .node-detail {
+    right: 50%; top: auto; bottom: 8%;
+    transform: translate(50%, 40px);
+  }
+  .node-detail.show { transform: translate(50%, 0); }
 }
 
 /* ---------- 减少动态 ---------- */

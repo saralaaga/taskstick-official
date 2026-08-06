@@ -3,29 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Taskstick 日事贴 — 笔记驱动，任务自成。｜本地优先的任务管理 × 笔记 macOS 应用</title>
-<meta name="description" content="Taskstick（日事贴）是一款本地优先的任务管理 × 笔记双引擎 macOS 应用：flomo 式卡片流笔记、任务行自动提取、双链 backlinks、智能列表筛选、全局快捷键与语音快速捕捉、多端同步。本地功能永久免费，不登录可用，离线完全可用。" />
+<title>Taskstick 日事贴 — 碎片入，清单出</title>
+<meta name="description" content="笔记里的任务行自动提取，经智能列表汇入当天。卡片笔记、双链、循环任务、语音捕捉、多端同步。本地功能永久免费。" />
 <meta name="keywords" content="Taskstick,日事贴,任务管理,笔记,本地优先,local-first,macOS,双链,Markdown,GTD,待办清单" />
 <meta name="author" content="Taskstick" />
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Taskstick 日事贴" />
-<meta property="og:title" content="Taskstick 日事贴 — 笔记驱动，任务自成。" />
-<meta property="og:description" content="把散落在笔记里的待办，汇聚成清晰的一天。本地优先的任务管理 × 笔记双引擎 macOS 应用。本地功能永久免费，不登录可用。" />
+<meta property="og:title" content="Taskstick 日事贴 — 碎片入，清单出" />
+<meta property="og:description" content="笔记里的任务行自动提取，经智能列表汇入当天。本地优先，多端同步。" />
 <meta property="og:locale" content="zh_CN" />
 <!-- Twitter -->
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Taskstick 日事贴 — 笔记驱动，任务自成。" />
+<meta name="twitter:title" content="Taskstick 日事贴 — 碎片入，清单出" />
 <meta name="twitter:description" content="把散落在笔记里的待办，汇聚成清晰的一天。本地优先 · 官方同步服务。" />
 <!-- 主题色：跟随系统 -->
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#070b09" />
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f5f1" />
 
-<!-- Fonts: Sora(标题) + IBM Plex Mono(HUD 标签) -->
+<!-- Fonts: Sora(标题) + IBM Plex Mono(HUD 标签) + Noto Sans SC(思源黑体) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
 
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
 <link rel="stylesheet" href="assets/css/style.css" />
 <!-- JS 可用时才启用 reveal 隐藏态；file:// 下 ES module 被浏览器拦截，跳过隐藏态保证内容完整可见 -->
 <script>if(location.protocol!=='file:')document.documentElement.classList.add('js');</script>
@@ -43,7 +45,7 @@
   "name": "Taskstick 日事贴",
   "operatingSystem": "macOS, Windows",
   "applicationCategory": "ProductivityApplication",
-  "description": "本地优先的任务管理 × 笔记双引擎 macOS 应用。笔记驱动，任务自成。",
+  "description": "Taskstick（日事贴）是一款为更好地推动执行做的效率软件，主要功能有卡片笔记、任务提取、双链 backlinks、智能列表筛选、全局快捷键与语音快速捕捉、多端同步。本地功能永久免费，不登录可用，离线完全可用。",
   "inLanguage": "zh-CN",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY", "description": "本地功能永久免费，同步与语音等能力为付费增值" }
 }
@@ -54,11 +56,11 @@
 <!-- ================= 导航 ================= -->
 <header class="nav">
   <div class="nav-inner">
-    <a class="logo" href="#top">Taskstick<span class="logo-dot">.</span><span class="logo-cn">日事贴</span></a>
+    <a class="logo" href="#top"><img class="logo-mark" src="assets/img/taskstick-logo.svg" alt="" aria-hidden="true" />Taskstick<span class="logo-dot">.</span><span class="logo-cn">日事贴</span></a>
     <nav class="nav-links" aria-label="主导航">
       <a href="#features">功能</a>
       <a href="#philosophy">理念</a>
-      <a href="#download">下载</a>
+      <a href="download.html">下载</a>
     </nav>
     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换明暗主题">☾</button>
   </div>
@@ -77,16 +79,62 @@
     <div class="hud-progress"><i id="hero-prog"></i></div>
   </div>
 
+  <!-- INSPECT 阶段：焦点节点光环 + 标签 + 详情卡（真实产品对象） -->
+  <div class="node-ring" id="hero-ring" aria-hidden="true"></div>
+  <div class="node-ring-label" id="hero-ring-label" aria-hidden="true">TASK — 任务节点</div>
+  <aside class="node-detail" id="hero-detail" aria-label="节点详情示例">
+    <article class="nd-item active" data-i="0">
+      <div class="d-title">给妈妈回电话 <span>/ 任务</span></div>
+      <div class="d-sub">二元状态 · 四种日期语义 · 标题内联语法</div>
+      <ul class="d-list">
+        <li><i>截止</i>周五</li>
+        <li><i>标签</i>#家庭</li>
+        <li><i>循环</i>每周</li>
+        <li><i>状态</i>未完成</li>
+      </ul>
+      <div class="d-foot"><span>TASK</span><i>RECUR WEEKLY</i></div>
+    </article>
+    <article class="nd-item" data-i="1">
+      <div class="d-title">3 月 12 日卡片 <span>/ 笔记</span></div>
+      <div class="d-sub">卡片流笔记 · Markdown 实时渲染</div>
+      <ul class="d-list">
+        <li><i>任务行</i>已自动提取 2 条任务</li>
+        <li><i>双链</i>3 个 backlinks</li>
+        <li><i>关联</i>任务 ↔ 笔记互相回溯</li>
+      </ul>
+      <div class="d-foot"><span>NOTE</span><i>BACKLINKS 3</i></div>
+    </article>
+    <article class="nd-item" data-i="2">
+      <div class="d-title">今天 <span>/ 智能列表</span></div>
+      <div class="d-sub">多条件组合筛选 · 快照存为列表</div>
+      <ul class="d-list">
+        <li><i>条件 1</i>标签：工作</li>
+        <li><i>条件 2</i>截止 ≤ 今天</li>
+        <li><i>快照</i>已存为智能列表</li>
+      </ul>
+      <div class="d-foot"><span>SMART LIST</span><i>SNAPSHOT</i></div>
+    </article>
+    <article class="nd-item" data-i="3">
+      <div class="d-title">“明天下午三点提醒我交稿” <span>/ 语音捕捉</span></div>
+      <div class="d-sub">语音指令建任务（付费功能）</div>
+      <ul class="d-list">
+        <li><i>结果</i>已建任务「交稿」</li>
+        <li><i>截止</i>明天 15:00</li>
+        <li><i>入口</i>语音指令</li>
+      </ul>
+      <div class="d-foot"><span>VOICE</span><i>CAPTURED</i></div>
+    </article>
+  </aside>
+
   <div class="hero-content">
-    <p class="sec-tag reveal">任务管理 × 笔记双引擎 · 本地优先</p>
-    <h1 class="reveal" style="--d:.08s">笔记驱动，任务自成。</h1>
-    <p class="lede reveal" style="--d:.16s">把散落在笔记里的待办，汇聚成清晰的一天。</p>
+    <p class="sec-tag reveal">多端收集 × AI 整理 · 本地优先</p>
+    <h1 class="reveal" style="--d:.08s">日事贴 — 碎片入，清单出。</h1>
+    <p class="lede reveal" style="--d:.16s">灵感不等人，随手扔进来，AI 帮你理成清单。</p>
     <p class="hero-desc reveal" style="--d:.24s">
-      Taskstick（日事贴）是一款本地优先的 macOS 应用：用 flomo 式卡片流记录笔记，
-      笔记中的任务行自动成为真正的任务，经智能列表汇入你的一天。
+      微信、邮件、脑子里冒出来的想法，从任意入口扔进来，AI 自动识别任务、提取日期、打标签，整理成今天能做的清单。
     </p>
     <div class="cta-row reveal" style="--d:.32s">
-      <a class="btn btn-solid js-primary-download" href="#download" data-download-label="hero">免费下载</a>
+      <a class="btn btn-solid js-primary-download" href="download.html" data-download-label="hero">免费下载</a>
       <a class="btn btn-ghost" href="#features">了解功能</a>
     </div>
     <p class="hero-note reveal" style="--d:.4s">macOS / Windows · 本地优先 · 官方同步服务</p>
@@ -98,108 +146,123 @@
 
   <section class="section section-head">
     <p class="sec-tag reveal">CAPABILITIES</p>
-    <h2 class="reveal" style="--d:.08s">一个引擎记事，一个引擎成事。</h2>
+    <h2 class="reveal" style="--d:.08s">碎片入，清单出。</h2>
     <p class="sec-desc reveal" style="--d:.16s">
-      任务与笔记不是两个工具，而是同一条流水线：随手记录，任务自行浮现。
+      多端收集碎片，AI 整理成网，清单推动执行。
     </p>
   </section>
 
-  <!-- a. 任务 × 笔记双引擎 -->
+  <!-- a. 多端输入 × AI 整理 -->
   <section class="section feature" id="f-engine">
     <div class="feature-copy">
-      <p class="sec-tag reveal">01 / DUAL ENGINE</p>
-      <h3 class="reveal" style="--d:.08s">任务 × 笔记双引擎</h3>
+      <p class="sec-tag reveal">01 / INTELLIGENT CAPTURE</p>
+      <h3 class="reveal" style="--d:.08s">多端输入 × AI 整理</h3>
       <p class="reveal" style="--d:.16s">
-        写下即管理。flomo 式卡片流笔记支持 Markdown 实时渲染；
-        笔记里的任务行会被自动提取为真实任务，双链 backlinks
-        让任务与笔记双向关联、互相回溯。
+        微信、邮件、语音、截图——从任意渠道扔进来的碎片，AI 自动识别任务、提取关键信息、构建关联。
       </p>
       <ul class="spec-list reveal" style="--d:.24s">
-        <li>完成 / 未完成的二元状态，干净不内耗</li>
-        <li>开始 / 计划 / 截止 / 完成，四种日期语义</li>
-        <li>循环任务、优先级、子任务拖拽嵌套、多选批量操作</li>
-        <li>标题内联语法：#标签 + 自然语言日期</li>
-        <li>卡片流笔记 · Markdown 实时渲染 · 双链 backlinks</li>
-        <li>笔记任务行自动提取，任务 ↔ 笔记双向关联</li>
+        <li>文本 / 图片 / 语音多格式识别</li>
+        <li>AI 提取任务与截止日期</li>
+        <li>自动打标签、关联相关笔记</li>
+        <li>智能建议优先级与时间安排</li>
       </ul>
     </div>
     <div class="fx-wrap reveal" style="--d:.2s">
       <canvas class="fx-canvas" data-fx="helix" aria-hidden="true"></canvas>
-      <span class="fx-label">NOTE ⇄ TASK / BACKLINK</span>
+      <span class="fx-label">MULTI-INPUT / AI · EXTRACT · ORGANIZE</span>
     </div>
   </section>
 
-  <!-- b. 智能列表与筛选 -->
+  <!-- b. 笔记记录 × 双链成网 -->
   <section class="section feature feature--flip" id="f-lists">
     <div class="feature-copy">
-      <p class="sec-tag reveal">02 / SMART LISTS</p>
-      <h3 class="reveal" style="--d:.08s">智能列表与筛选</h3>
+      <p class="sec-tag reveal">02 / NOTE & BACKLINK</p>
+      <h3 class="reveal" style="--d:.08s">笔记记录 × 双链成网</h3>
       <p class="reveal" style="--d:.16s">
-        按标签、来源、日期多条件组合筛选，把散落的任务过滤成当下需要的视角；
-        筛选结果可一键快照存为列表，常用视角随时召回。
+        复杂任务需要深度思考，随时记下想法。笔记里的任务行自动提取，双链让碎片成线，构建知识网络。
       </p>
       <ul class="spec-list reveal" style="--d:.24s">
-        <li>标签 / 来源 / 日期多条件组合</li>
-        <li>筛选结果快照存为智能列表</li>
+        <li>卡片流笔记，Markdown 实时渲染</li>
+        <li>笔记里的任务行自动提取为真实任务</li>
+        <li>双向链接，碎片自动关联</li>
+        <li>任务 ↔ 笔记互相回溯</li>
+        <li>从碎片到网络，加强记忆</li>
       </ul>
     </div>
     <div class="fx-wrap reveal" style="--d:.2s">
       <canvas class="fx-canvas" data-fx="gate" aria-hidden="true"></canvas>
-      <span class="fx-label">FILTER / TAG · SOURCE · DATE</span>
+      <span class="fx-label">NOTE ⇄ TASK / BACKLINK · NETWORK</span>
     </div>
   </section>
 
-  <!-- c. 快速捕捉与语音 -->
+  <!-- c. 筛选聚合 × 执行视角 -->
   <section class="section feature" id="f-capture">
     <div class="feature-copy">
-      <p class="sec-tag reveal">03 / QUICK CAPTURE</p>
-      <h3 class="reveal" style="--d:.08s">快速捕捉与语音</h3>
+      <p class="sec-tag reveal">03 / SMART LISTS</p>
+      <h3 class="reveal" style="--d:.08s">筛选聚合 × 执行视角</h3>
       <p class="reveal" style="--d:.16s">
-        想法消失之前先入库。全局快捷键唤起捕捉弹窗，不打断手头的工作；
-        语音指令直接创建、关闭、删除、查询、改期、加标签（付费功能）；
-        企业微信、邮件、短信、快捷指令，都是统一入口。
+        AI 整理后的任务，按标签、日期、来源筛选，形成"今天""本周""工作"等执行清单。
       </p>
       <ul class="spec-list reveal" style="--d:.24s">
-        <li>全局快捷键捕捉弹窗</li>
-        <li>语音指令：创建 / 关闭 / 删除 / 查询 / 改期 / 加标签（付费）</li>
-        <li>企业微信 / 邮件 / 短信 / 快捷指令统一入口</li>
+        <li>多维度筛选组合</li>
+        <li>AI 推荐今日待办</li>
+        <li>自定义列表视角</li>
+        <li>筛选结果快照存为列表</li>
       </ul>
     </div>
     <div class="fx-wrap reveal" style="--d:.2s">
       <canvas class="fx-canvas" data-fx="capture" aria-hidden="true"></canvas>
-      <span class="fx-label">CAPTURE / GLOBAL HOTKEY</span>
+      <span class="fx-label">FILTER / TAG · SOURCE · DATE · AI</span>
     </div>
   </section>
 
-  <!-- d. 多端同步 -->
+  <!-- d. 快速捕捉 × 语音入口 -->
   <section class="section feature feature--flip" id="f-sync">
     <div class="feature-copy">
-      <p class="sec-tag reveal">04 / SYNC</p>
-      <h3 class="reveal" style="--d:.08s">多端同步</h3>
+      <p class="sec-tag reveal">04 / QUICK CAPTURE</p>
+      <h3 class="reveal" style="--d:.08s">快速捕捉 × 语音入口</h3>
       <p class="reveal" style="--d:.16s">
-        基于变更链的三方合并，离线完全可用，联网后自动对齐；
-        服务器仅作中转，数据的主权始终在你手里。同步为付费功能，本地功能不受影响。
+        全局快捷键唤起捕捉弹窗；语音指令创建、查询、改期（付费功能）；企业微信、邮件、短信、快捷指令，都是入口。
       </p>
       <ul class="spec-list reveal" style="--d:.24s">
-        <li>变更链三方合并，冲突自动消解</li>
-        <li>服务器仅中转，离线完全可用</li>
-        <li>付费增值，不买断自己的数据</li>
+        <li>全局快捷键捕捉弹窗</li>
+        <li>语音指令：创建 / 查询 / 改期 / 加标签（付费）</li>
+        <li>企业微信 / 邮件 / 短信 / 快捷指令</li>
       </ul>
     </div>
     <div class="fx-wrap reveal" style="--d:.2s">
       <canvas class="fx-canvas" data-fx="sync" aria-hidden="true"></canvas>
+      <span class="fx-label">CAPTURE / GLOBAL HOTKEY</span>
+    </div>
+  </section>
+
+  <!-- e. 多端同步 -->
+  <section class="section feature" id="f-local">
+    <div class="feature-copy">
+      <p class="sec-tag reveal">05 / SYNC</p>
+      <h3 class="reveal" style="--d:.08s">多端同步</h3>
+      <p class="reveal" style="--d:.16s">
+        变更链三方合并，离线可用，联网自动对齐；服务器仅作中转。同步为付费功能，本地功能不受影响。
+      </p>
+      <ul class="spec-list reveal" style="--d:.24s">
+        <li>变更链三方合并，冲突自动消解</li>
+        <li>服务器仅中转，离线完全可用</li>
+        <li>付费增值，数据主权在你手里</li>
+      </ul>
+    </div>
+    <div class="fx-wrap reveal" style="--d:.2s">
+      <canvas class="fx-canvas" data-fx="shield" aria-hidden="true"></canvas>
       <span class="fx-label">SYNC / 3-WAY MERGE</span>
     </div>
   </section>
 
-  <!-- e. 本地优先与数据主权 -->
-  <section class="section feature" id="f-local">
+  <!-- f. 本地优先与数据主权 -->
+  <section class="section feature feature--flip" id="f-sources">
     <div class="feature-copy">
-      <p class="sec-tag reveal">05 / LOCAL-FIRST</p>
+      <p class="sec-tag reveal">06 / LOCAL-FIRST</p>
       <h3 class="reveal" style="--d:.08s">本地优先与数据主权</h3>
       <p class="reveal" style="--d:.16s">
-        数据首先存在你的设备上。本地功能永久免费，不登录即可使用全部本地功能，
-        账户仅在你需要同步时才登场。
+        数据存在你的设备上。本地功能永久免费，不登录可用，账户仅用于同步。
       </p>
       <ul class="spec-list reveal" style="--d:.24s">
         <li>本地功能永久免费</li>
@@ -208,31 +271,8 @@
       </ul>
     </div>
     <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="shield" aria-hidden="true"></canvas>
-      <span class="fx-label">LOCAL-FIRST / YOUR DATA</span>
-    </div>
-  </section>
-
-  <!-- f. 多来源聚合（刻意排在最后） -->
-  <section class="section feature feature--flip" id="f-sources">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">06 / SOURCES</p>
-      <h3 class="reveal" style="--d:.08s">多来源聚合</h3>
-      <p class="reveal" style="--d:.16s">
-        Apple 提醒事项、Apple 日历、ICS 订阅、滴答清单、Obsidian Markdown——
-        散落在各处的待办与日程，汇入同一张清晰的一天。
-      </p>
-      <ul class="spec-list spec-sources reveal" style="--d:.24s">
-        <li><i class="dot" style="--c:#FF9F0A"></i>Apple 提醒事项</li>
-        <li><i class="dot" style="--c:#FF453A"></i>Apple 日历</li>
-        <li><i class="dot" style="--c:#30B0C7"></i>ICS 订阅</li>
-        <li><i class="dot" style="--c:#0A84FF"></i>滴答清单</li>
-        <li><i class="dot" style="--c:#7D7AFF"></i>Obsidian Markdown</li>
-      </ul>
-    </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
       <canvas class="fx-canvas" data-fx="gather" aria-hidden="true"></canvas>
-      <span class="fx-label">AGGREGATE / REMINDERS · CALENDAR · ICS · TICKTICK</span>
+      <span class="fx-label">LOCAL-FIRST / YOUR DATA</span>
     </div>
   </section>
 
@@ -240,23 +280,23 @@
   <section class="section philosophy" id="philosophy">
     <p class="sec-tag reveal">PRINCIPLE</p>
     <blockquote class="reveal" style="--d:.08s">
-      「本地数据免费且永远属于用户，<br />收费的是流动与智能，而不是赎回自己的数据。」
+      「本地数据免费且永远属于用户，<br />收费的是流动与智能，不是赎回自己的数据。」
     </blockquote>
     <div class="principle-grid">
       <div class="principle reveal" style="--d:.16s">
         <p class="p-no">P·01</p>
         <h4>本地功能永久免费</h4>
-        <p>记录、管理、筛选、捕捉——在本地发生的一切，不收一分钱。</p>
+        <p>记录、管理、筛选、捕捉，本地发生的一切不收费。</p>
       </div>
       <div class="principle reveal" style="--d:.24s">
         <p class="p-no">P·02</p>
         <h4>不登录可用</h4>
-        <p>不注册、不登录，即可使用全部本地功能。账户只为同步而存在。</p>
+        <p>不注册、不登录，可用全部本地功能。账户只为同步而存在。</p>
       </div>
       <div class="principle reveal" style="--d:.32s">
         <p class="p-no">P·03</p>
         <h4>离线完全可用</h4>
-        <p>断网不是降级模式。离线时功能完整，联网后同步自动对齐。</p>
+        <p>断网不是降级。离线时功能完整，联网后自动对齐。</p>
       </div>
     </div>
   </section>
@@ -264,17 +304,11 @@
   <!-- ================= 下载区 ================= -->
   <section class="section download" id="download">
     <p class="sec-tag reveal">DOWNLOAD</p>
-    <h2 class="reveal" style="--d:.08s">让今天的待办，各就各位。</h2>
-    <p class="download-copy reveal" style="--d:.14s">优先匹配你的系统与常用架构；如果你使用 Intel Mac、Windows ARM 或其他设备，可以手动选择安装包。</p>
-    <div class="dl-row reveal" style="--d:.2s">
-      <a class="btn btn-solid btn-lg js-primary-download" href="#download" aria-describedby="download-note">
-        <span class="download-title">检测可用版本...</span>
-        <span class="download-meta">正在读取官方发布信息</span>
-      </a>
-      <button class="btn btn-ghost btn-lg download-switch" type="button" aria-expanded="false" aria-controls="download-options">其他版本</button>
+    <h2 class="reveal" style="--d:.08s">选择你的安装包。</h2>
+    <p class="dl-note reveal" id="download-note" data-download-status style="--d:.32s">macOS / Windows 桌面版 · 下载链接待配置 · 本地功能永久免费</p>
+    <div class="dl-row reveal" style="--d:.38s">
+      <a class="btn btn-ghost btn-lg" href="download.html">打开下载中心</a>
     </div>
-    <div class="download-options reveal" id="download-options" style="--d:.26s" hidden></div>
-    <p class="dl-note reveal" id="download-note" style="--d:.32s">macOS / Windows 桌面版 · 本地优先 · 官方同步服务</p>
   </section>
 </main>
 
@@ -282,7 +316,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="f-brand">
-      <p class="logo">Taskstick<span class="logo-dot">.</span></p>
+      <p class="logo"><img class="logo-mark" src="assets/img/taskstick-logo.svg" alt="" aria-hidden="true" />Taskstick<span class="logo-dot">.</span></p>
       <p class="f-slogan">笔记驱动，任务自成。</p>
     </div>
     <div class="f-meta">

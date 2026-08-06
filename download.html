@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>下载 Taskstick 日事贴 — 选择适合你的安装包</title>
+<meta name="description" content="Taskstick（日事贴）下载中心。手动选择 macOS Apple 芯片、macOS Intel、Windows 64 位或 Windows ARM64 安装包。" />
+<meta name="keywords" content="Taskstick,日事贴,下载,macOS,Windows,安装包" />
+<meta name="author" content="Taskstick" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#070b09" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f5f1" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
+
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="stylesheet" href="assets/css/style.css" />
+<script>if(location.protocol!=='file:')document.documentElement.classList.add('js');</script>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module" src="assets/js/main.js"></script>
+<script src="assets/js/download.js"></script>
+</head>
+<body class="download-page">
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html#top"><img class="logo-mark" src="assets/img/taskstick-logo.svg" alt="" aria-hidden="true" />Taskstick<span class="logo-dot">.</span><span class="logo-cn">日事贴</span></a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="index.html#features">功能</a>
+      <a href="index.html#philosophy">理念</a>
+      <a href="download.html" aria-current="page">下载</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换明暗主题">☾</button>
+  </div>
+</header>
+
+<main class="download-page-main">
+  <section class="download-hero">
+    <p class="sec-tag reveal">DOWNLOAD CENTER</p>
+    <h1 class="reveal" style="--d:.08s">下载 Taskstick 日事贴</h1>
+    <p class="download-hero-copy reveal" style="--d:.16s">
+      按设备和架构选择安装包。
+    </p>
+  </section>
+
+  <section class="download-board reveal" style="--d:.24s" aria-labelledby="desktop-downloads">
+    <div class="download-board-head">
+      <div>
+        <p class="sec-tag">DESKTOP</p>
+        <h2 id="desktop-downloads">桌面版安装包</h2>
+      </div>
+      <p>macOS / Windows · 本地优先 · 官方同步服务</p>
+    </div>
+    <div class="download-grid js-download-list"></div>
+    <p class="download-status" data-download-status>真实下载地址会在发布时替换占位链接。</p>
+  </section>
+
+  <section class="download-help" aria-label="下载说明">
+    <article>
+      <span>01</span>
+      <h2>Mac 怎么选</h2>
+      <p>M1、M2、M3、M4 等机型选择 Apple 芯片；较早的 Intel Mac 选择 Intel 芯片。</p>
+    </article>
+    <article>
+      <span>02</span>
+      <h2>Windows 怎么选</h2>
+      <p>大多数 Windows 电脑选择 64 位；只有 ARM 架构设备才选择 Windows ARM64。</p>
+    </article>
+    <article>
+      <span>03</span>
+      <h2>发布信息</h2>
+      <p>版本号、文件大小、签名、公证和 SHA256 校验值会随真实下载链接一起补充。</p>
+    </article>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="f-brand">
+      <p class="logo"><img class="logo-mark" src="assets/img/taskstick-logo.svg" alt="" aria-hidden="true" />Taskstick<span class="logo-dot">.</span></p>
+      <p class="f-slogan">笔记驱动，任务自成。</p>
+    </div>
+    <div class="f-meta">
+      <p>© 2026 Taskstick 日事贴</p>
+      <p class="f-icp">京ICP备00000000号-0（占位）</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
