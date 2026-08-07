@@ -80,12 +80,16 @@ function applyTheme(t, persist) {
   if (mqReduced.matches) return;
 
   const start = () => {
-    import('./hero.js')
-      .then(m => m.initHero())
-      .catch(err => console.warn('[taskstick] hero 动效未启动：', err));
-    import('./features.js')
-      .then(m => m.initFeatures())
-      .catch(err => console.warn('[taskstick] 功能区动效未启动：', err));
+    if (document.getElementById('hero-canvas')) {
+      import('./hero.js')
+        .then(m => m.initHero())
+        .catch(err => console.warn('[taskstick] hero 动效未启动：', err));
+    }
+    if (document.querySelector('.fx-canvas')) {
+      import('./features.js')
+        .then(m => m.initFeatures())
+        .catch(err => console.warn('[taskstick] 功能区动效未启动：', err));
+    }
   };
 
   // 动态 import，不阻塞首屏
