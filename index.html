@@ -1,329 +1,467 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Taskstick 日事贴 — 碎片入，清单出</title>
-<meta name="description" content="笔记里的任务行自动提取，经智能列表汇入当天。卡片笔记、双链、循环任务、语音捕捉、多端同步。本地功能永久免费。" />
-<meta name="keywords" content="Taskstick,日事贴,任务管理,笔记,本地优先,local-first,macOS,双链,Markdown,GTD,待办清单" />
+<title>Taskstick — The todos in your notes, turned into a list</title>
+<meta name="description" content="Every “- [ ]” you write in a Markdown note is extracted into a task and gathered into one list; check it off and the note updates to “- [x]”. AI organizing, list / calendar / quadrant views. Local-first, local features free forever." />
+<meta name="keywords" content="Taskstick, markdown task manager, tasks in notes, checkbox todos, task extraction, AI organizing, Eisenhower matrix, calendar, local-first, macOS, backlinks" />
 <meta name="author" content="Taskstick" />
-<!-- Open Graph -->
+<link rel="canonical" href="https://taskstick.com/" />
+<link rel="alternate" hreflang="en" href="https://taskstick.com/" />
+<link rel="alternate" hreflang="zh-CN" href="https://taskstick.com/zh/" />
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Taskstick 日事贴" />
-<meta property="og:title" content="Taskstick 日事贴 — 碎片入，清单出" />
-<meta property="og:description" content="笔记里的任务行自动提取，经智能列表汇入当天。本地优先，多端同步。" />
-<meta property="og:locale" content="zh_CN" />
-<!-- Twitter -->
+<meta property="og:site_name" content="Taskstick" />
+<meta property="og:title" content="Taskstick — The todos in your notes, turned into a list" />
+<meta property="og:description" content="“- [ ]” lines in your Markdown notes become one list; check them off and the note updates. Local-first, local features free forever." />
+<meta property="og:locale" content="en" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Taskstick 日事贴 — 碎片入，清单出" />
-<meta name="twitter:description" content="把散落在笔记里的待办，汇聚成清晰的一天。本地优先 · 官方同步服务。" />
-<!-- 主题色：跟随系统 -->
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#070b09" />
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f5f1" />
-
-<!-- Fonts: Sora(标题) + IBM Plex Mono(HUD 标签) + Noto Sans SC(思源黑体) -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
-
+<meta name="twitter:title" content="Taskstick — The todos in your notes, turned into a list" />
+<meta name="twitter:description" content="“- [ ]” lines in your Markdown notes become one list; check them off and the note updates. Local-first." />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e0c" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f7f5" />
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
-<link rel="stylesheet" href="assets/css/style.css" />
-<!-- JS 可用时才启用 reveal 隐藏态；file:// 下 ES module 被浏览器拦截，跳过隐藏态保证内容完整可见 -->
-<script>if(location.protocol!=='file:')document.documentElement.classList.add('js');</script>
-
-<!-- Three.js importmap（与粒子动画 demo 一致） -->
-<script type="importmap">
-{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+<script>
+/* Resolve theme before first paint to avoid a flash */
+(function(){var t;try{t=localStorage.getItem('taskstick-theme')}catch(e){}
+if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')d.classList.add('js');})();
 </script>
-<script type="module" src="assets/js/main.js"></script>
-
+<link rel="stylesheet" href="assets/css/site.css" />
+<script type="module" src="assets/js/site.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Taskstick 日事贴",
-  "operatingSystem": "macOS, Windows",
+  "name": "Taskstick",
+  "operatingSystem": "macOS",
   "applicationCategory": "ProductivityApplication",
-  "description": "Taskstick（日事贴）是一款为更好地推动执行做的效率软件，主要功能有卡片笔记、任务提取、双链 backlinks、智能列表筛选、全局快捷键与语音快速捕捉、多端同步。本地功能永久免费，不登录可用，离线完全可用。",
-  "inLanguage": "zh-CN",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY", "description": "本地功能永久免费，同步与语音等能力为付费增值" }
+  "description": "Taskstick reads your Markdown notes, extracts “- [ ]” lines into tasks and gathers them into lists; checking one off writes back to the note. AI organizing, list / calendar / quadrant views, backlinks. Local-first, local features free forever, no sign-in required.",
+  "inLanguage": "en",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Local features free forever; sync and voice are paid add-ons" }
 }
 </script>
 </head>
 <body>
 
-<!-- ================= 导航 ================= -->
+<a class="skip" href="#main">Skip to content</a>
+
 <header class="nav">
-  <div class="nav-inner">
-    <a class="logo" href="#top"><img class="logo-mark" src="assets/img/taskstick-logo.svg" alt="" aria-hidden="true" />Taskstick<span class="logo-dot">.</span><span class="logo-cn">日事贴</span></a>
-    <nav class="nav-links" aria-label="主导航">
-      <a href="#features">功能</a>
-      <a href="#philosophy">理念</a>
-      <a href="download.html">下载</a>
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="Taskstick home">
+      <img src="assets/img/taskstick-logo.svg" alt="" width="32" height="32" />
+      <span>Taskstick</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#views">Views</a>
+      <a href="#principles">Principles</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换明暗主题">☾</button>
+    <div class="nav-actions">
+      <a class="icon-btn" href="zh/" lang="zh-CN" aria-label="切换到中文">中</a>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle color theme">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="download.html">Download</a>
+    </div>
   </div>
 </header>
 
+<main id="main">
+
 <!-- ================= Hero ================= -->
 <section class="hero" id="top">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
-
-  <div class="hero-hud" aria-hidden="true">
-    <div class="hud-frame"><span class="corner c-bl"></span><span class="corner c-br"></span></div>
-    <div class="hud-tag tag-lt"><b>TASKSTICK</b>&nbsp;/ 日事贴</div>
-    <div class="hud-tag tag-rt">LOCAL-FIRST&nbsp;&nbsp;MACOS</div>
-    <div class="hud-tag tag-vertical">TASK / CAPTURE / ORGANIZE / SYNC</div>
-    <div class="hud-tag tag-phase" id="hero-phase"><b>01</b>&nbsp;&nbsp;/ CAPTURE</div>
-    <div class="hud-progress"><i id="hero-prog"></i></div>
+  <div class="container hero-copy">
+    <p class="eyebrow reveal">Markdown notes × to-do lists · macOS</p>
+    <h1 class="reveal" style="--d:.06s">The todos in your notes,<br>turned into a list</h1>
+    <p class="lede reveal" style="--d:.12s">Write <code>- [ ]</code> in any Markdown note and Taskstick turns it into a task in your list. Check it off in the list, and the note updates to <code>- [x]</code>.</p>
+    <div class="cta-row reveal" style="--d:.18s">
+      <a class="btn btn-primary btn-lg" href="download.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="apple"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        Download free for macOS
+      </a>
+      <a class="btn btn-ghost btn-lg" href="#features">See how it works</a>
+    </div>
+    <p class="hero-meta reveal" style="--d:.24s">macOS 13+ · Local features free forever · No account needed</p>
   </div>
 
-  <!-- INSPECT 阶段：焦点节点光环 + 标签 + 详情卡（真实产品对象） -->
-  <div class="node-ring" id="hero-ring" aria-hidden="true"></div>
-  <div class="node-ring-label" id="hero-ring-label" aria-hidden="true">TASK — 任务节点</div>
-  <aside class="node-detail" id="hero-detail" aria-label="节点详情示例">
-    <article class="nd-item active" data-i="0">
-      <div class="d-title">给妈妈回电话 <span>/ 任务</span></div>
-      <div class="d-sub">二元状态 · 四种日期语义 · 标题内联语法</div>
-      <ul class="d-list">
-        <li><i>截止</i>周五</li>
-        <li><i>标签</i>#家庭</li>
-        <li><i>循环</i>每周</li>
-        <li><i>状态</i>未完成</li>
-      </ul>
-      <div class="d-foot"><span>TASK</span><i>RECUR WEEKLY</i></div>
-    </article>
-    <article class="nd-item" data-i="1">
-      <div class="d-title">3 月 12 日卡片 <span>/ 笔记</span></div>
-      <div class="d-sub">卡片流笔记 · Markdown 实时渲染</div>
-      <ul class="d-list">
-        <li><i>任务行</i>已自动提取 2 条任务</li>
-        <li><i>双链</i>3 个 backlinks</li>
-        <li><i>关联</i>任务 ↔ 笔记互相回溯</li>
-      </ul>
-      <div class="d-foot"><span>NOTE</span><i>BACKLINKS 3</i></div>
-    </article>
-    <article class="nd-item" data-i="2">
-      <div class="d-title">今天 <span>/ 智能列表</span></div>
-      <div class="d-sub">多条件组合筛选 · 快照存为列表</div>
-      <ul class="d-list">
-        <li><i>条件 1</i>标签：工作</li>
-        <li><i>条件 2</i>截止 ≤ 今天</li>
-        <li><i>快照</i>已存为智能列表</li>
-      </ul>
-      <div class="d-foot"><span>SMART LIST</span><i>SNAPSHOT</i></div>
-    </article>
-    <article class="nd-item" data-i="3">
-      <div class="d-title">“明天下午三点提醒我交稿” <span>/ 语音捕捉</span></div>
-      <div class="d-sub">语音指令建任务（付费功能）</div>
-      <ul class="d-list">
-        <li><i>结果</i>已建任务「交稿」</li>
-        <li><i>截止</i>明天 15:00</li>
-        <li><i>入口</i>语音指令</li>
-      </ul>
-      <div class="d-foot"><span>VOICE</span><i>CAPTURED</i></div>
-    </article>
-  </aside>
+  <div class="container hero-stage reveal" style="--d:.3s">
+    <div class="app-window demo-sync" data-demo="sync" role="img" aria-label="Demo: a task line typed into a note appears in the list automatically; checking it off in the list turns - [ ] into - [x] in the note">
+      <div class="win-bar" aria-hidden="true">
+        <span class="lights"><i></i><i></i><i></i></span>
+        <span class="win-title">Taskstick</span>
+      </div>
+      <div class="sync-body" aria-hidden="true">
+        <div class="pane pane-note">
+          <div class="pane-head">
+            <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+            This week.md
+            <span class="pane-sub">Note</span>
+          </div>
+          <div class="md">
+            <div class="md-line md-h"># This week</div>
+            <div class="md-line md-p">Last week of the homepage redesign — ship in order.</div>
+            <div class="md-line md-task" data-id="a"><span class="md-box">- [ ]</span> Finalize release checklist <span class="md-date">today 10:00</span> <span class="md-tag">#product</span></div>
+            <div class="md-line md-task" data-id="b"><span class="md-box">- [ ]</span> Run all P0 regression tests <span class="md-date">Thu</span> <span class="md-tag">#dev</span></div>
+            <div class="md-line md-task md-new" data-id="c"><template><span class="md-box">- [ ]</span> Call Mom <span class="md-date">Fri</span> <span class="md-tag">#family</span></template><span class="md-typed"></span><span class="caret"></span></div>
+            <div class="md-line md-p md-faint">See [[Release-day checklist]]</div>
+          </div>
+        </div>
 
-  <div class="hero-content">
-    <p class="sec-tag reveal">多端收集 × AI 整理 · 本地优先</p>
-    <h1 class="reveal" style="--d:.08s">日事贴 — 碎片入，清单出。</h1>
-    <p class="lede reveal" style="--d:.16s">灵感不等人，随手扔进来，AI 帮你理成清单。</p>
-    <p class="hero-desc reveal" style="--d:.24s">
-      微信、邮件、脑子里冒出来的想法，从任意入口扔进来，AI 自动识别任务、提取日期、打标签，整理成今天能做的清单。
-    </p>
-    <div class="cta-row reveal" style="--d:.32s">
-      <a class="btn btn-solid js-primary-download" href="download.html" data-download-label="hero">免费下载</a>
-      <a class="btn btn-ghost" href="#features">了解功能</a>
+        <div class="bridge">
+          <span class="bridge-line"></span>
+          <span class="bridge-chip bridge-extract">Extract</span>
+          <span class="bridge-chip bridge-write">Write back</span>
+        </div>
+
+        <div class="pane pane-list">
+          <div class="pane-head">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+            This week
+            <span class="pane-count">3</span>
+            <span class="pane-sub">Smart list</span>
+          </div>
+          <ul class="tlist">
+            <li data-id="a">
+              <span class="check"></span>
+              <div><b>Finalize release checklist</b><small><em>Today 10:00</em><span class="tag">#product</span><span class="src">This week.md</span></small></div>
+            </li>
+            <li data-id="b">
+              <span class="check"></span>
+              <div><b>Run all P0 regression tests</b><small><em>Thu</em><span class="tag">#dev</span><span class="src">This week.md</span></small></div>
+            </li>
+            <li data-id="c" class="is-new">
+              <span class="check"></span>
+              <div><b>Call Mom</b><small><em>Fri</em><span class="tag">#family</span><span class="src">This week.md</span></small></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <svg class="pointer" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 8-6 1.5L10 19z"/></svg>
+      <div class="toast" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Written back to This week.md</div>
     </div>
-    <p class="hero-note reveal" style="--d:.4s">macOS / Windows · 本地优先 · 官方同步服务</p>
+  </div>
+
+  <div class="container trust">
+    <span><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Plain .md files, no lock-in</span>
+    <span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Data stays on your Mac</span>
+    <span><svg viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg>Fully works offline</span>
+    <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>No sign-in required</span>
   </div>
 </section>
 
-<!-- ================= 功能区 ================= -->
-<main id="features">
+<!-- ================= Feature 1: extract & write back ================= -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Core features</p>
+      <h2>Write todos in notes. Get them done from a list.</h2>
+      <p class="sec-desc">No more copying tasks from your notes into another app. Taskstick reads your vault and gathers every scattered task line into one list you can act on.</p>
+    </div>
 
-  <section class="section section-head">
-    <p class="sec-tag reveal">CAPABILITIES</p>
-    <h2 class="reveal" style="--d:.08s">碎片入，清单出。</h2>
-    <p class="sec-desc reveal" style="--d:.16s">
-      多端收集碎片，AI 整理成网，清单推动执行。
-    </p>
-  </section>
+    <div class="feature">
+      <div class="feature-copy reveal">
+        <span class="kicker">01 · Extract &amp; write back</span>
+        <h3>Your notes are your to-do list</h3>
+        <p>Task lines in any .md note become real tasks. Check one off in the list and the note's <code>- [ ]</code> becomes <code>- [x]</code> — both sides always agree.</p>
+        <ul class="ticks">
+          <li>Scan your whole vault, or only chosen folders</li>
+          <li>Inline dates, #tags and recurring syntax</li>
+          <li>Jump from any task back to its note</li>
+          <li>Notes stay plain text — open them in Obsidian or any editor</li>
+        </ul>
+      </div>
+      <figure class="feature-media reveal" style="--d:.1s">
+        <div class="shot">
+          <img src="assets/img/app/tasks-en.webp" width="1280" height="800" alt="Taskstick list view: tasks grouped into Overdue, Today and Tomorrow, each showing its source note" loading="lazy" />
+        </div>
+      </figure>
+    </div>
 
-  <!-- a. 多端输入 × AI 整理 -->
-  <section class="section feature" id="f-engine">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">01 / INTELLIGENT CAPTURE</p>
-      <h3 class="reveal" style="--d:.08s">多端输入 × AI 整理</h3>
-      <p class="reveal" style="--d:.16s">
-        微信、邮件、语音、截图——从任意渠道扔进来的碎片，AI 自动识别任务、提取关键信息、构建关联。
-      </p>
-      <ul class="spec-list reveal" style="--d:.24s">
-        <li>文本 / 图片 / 语音多格式识别</li>
-        <li>AI 提取任务与截止日期</li>
-        <li>自动打标签、关联相关笔记</li>
-        <li>智能建议优先级与时间安排</li>
-      </ul>
+    <!-- Feature 2: AI organizing -->
+    <div class="feature feature-rev">
+      <div class="feature-copy reveal">
+        <span class="kicker">02 · AI organizing</span>
+        <h3>Paste a paragraph, get back a to-do list</h3>
+        <p>Meeting notes, chat logs, article snippets — paste them in. AI picks out the tasks, due dates and tags, and <strong>nothing is written to your notes until you confirm</strong>.</p>
+        <ul class="ticks">
+          <li>Extracts tasks and due dates</li>
+          <li>Suggests tags and links related notes</li>
+          <li>Ask in plain language: “What's overdue?”</li>
+          <li>Review each item before it's written</li>
+        </ul>
+      </div>
+      <figure class="feature-media reveal" style="--d:.1s">
+        <div class="app-window demo-ai" data-demo="ai" role="img" aria-label="Demo: after pasting meeting notes, AI finds three tasks with dates and tags and writes them to a note once confirmed">
+          <div class="win-bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="win-title">AI organize</span></div>
+          <div class="ai-body" aria-hidden="true">
+            <div class="msg msg-user">
+              <span class="msg-label">Weekly sync notes</span>
+              Lin sends the homepage redesign by next Wednesday; confirm privacy terms with legal on Friday; ship v2.1 by month end — run regression tests first.
+            </div>
+            <div class="msg msg-ai">
+              <span class="spark"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span>
+              <span class="thinking">Finding tasks<i></i><i></i><i></i></span>
+              <span class="found">Found 3 tasks</span>
+            </div>
+            <div class="ai-cards">
+              <div class="ai-card" style="--i:0"><span class="check"></span><b>Deliver homepage redesign</b><em>Next Wed</em><span class="tag">#design</span></div>
+              <div class="ai-card" style="--i:1"><span class="check"></span><b>Confirm privacy terms with legal</b><em>Fri</em><span class="tag">#legal</span></div>
+              <div class="ai-card" style="--i:2"><span class="check"></span><b>Ship v2.1 after regression tests</b><em>Sep 30</em><span class="tag">#release</span></div>
+            </div>
+            <div class="ai-actions">
+              <span class="fake-btn">Add to note</span>
+              <span class="ai-dest">To Weekly sync.md</span>
+              <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>3 tasks added</span>
+            </div>
+          </div>
+        </div>
+      </figure>
     </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="intelligent-collect" aria-hidden="true"></canvas>
-      <span class="fx-label">MULTI-INPUT / AI · EXTRACT · ORGANIZE</span>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- b. 笔记记录 × 双链成网 -->
-  <section class="section feature feature--flip" id="f-lists">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">02 / NOTE & BACKLINK</p>
-      <h3 class="reveal" style="--d:.08s">笔记记录 × 双链成网</h3>
-      <p class="reveal" style="--d:.16s">
-        复杂任务需要深度思考，随时记下想法。笔记里的任务行自动提取，双链让碎片成线，构建知识网络。
-      </p>
-      <ul class="spec-list reveal" style="--d:.24s">
-        <li>卡片流笔记，Markdown 实时渲染</li>
-        <li>笔记里的任务行自动提取为真实任务</li>
-        <li>双向链接，碎片自动关联</li>
-        <li>任务 ↔ 笔记互相回溯</li>
-        <li>从碎片到网络，加强记忆</li>
-      </ul>
+<!-- ================= Views ================= -->
+<section class="section section-alt" id="views">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">03 · Views</p>
+      <h2>Same tasks, different angles</h2>
+      <p class="sec-desc">Sort by date, lay out on a calendar, or split by urgency and importance. Switch between list, calendar and quadrant views — every task still comes from the same notes.</p>
     </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="network-link" aria-hidden="true"></canvas>
-      <span class="fx-label">NOTE ⇄ TASK / BACKLINK · NETWORK</span>
-    </div>
-  </section>
 
-  <!-- c. 筛选聚合 × 执行视角 -->
-  <section class="section feature" id="f-capture">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">03 / SMART LISTS</p>
-      <h3 class="reveal" style="--d:.08s">筛选聚合 × 执行视角</h3>
-      <p class="reveal" style="--d:.16s">
-        AI 整理后的任务，按标签、日期、来源筛选，形成"今天""本周""工作"等执行清单。
-      </p>
-      <ul class="spec-list reveal" style="--d:.24s">
-        <li>多维度筛选组合</li>
-        <li>AI 推荐今日待办</li>
-        <li>自定义列表视角</li>
-        <li>筛选结果快照存为列表</li>
-      </ul>
-    </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="filter-funnel" aria-hidden="true"></canvas>
-      <span class="fx-label">FILTER / TAG · SOURCE · DATE · AI</span>
-    </div>
-  </section>
+    <div class="views reveal" data-demo="views">
+      <div class="seg" role="tablist" aria-label="Views">
+        <button role="tab" id="tab-list" aria-controls="view-list" aria-selected="true" data-view="list">List</button>
+        <button role="tab" id="tab-cal" aria-controls="view-cal" aria-selected="false" data-view="cal" tabindex="-1">Calendar</button>
+        <button role="tab" id="tab-quad" aria-controls="view-quad" aria-selected="false" data-view="quad" tabindex="-1">Quadrant</button>
+        <span class="seg-ind" aria-hidden="true"></span>
+      </div>
 
-  <!-- d. 快速捕捉 × 语音入口 -->
-  <section class="section feature feature--flip" id="f-sync">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">04 / QUICK CAPTURE</p>
-      <h3 class="reveal" style="--d:.08s">快速捕捉 × 语音入口</h3>
-      <p class="reveal" style="--d:.16s">
-        全局快捷键唤起捕捉弹窗；语音指令创建、查询、改期（付费功能）；企业微信、邮件、短信、快捷指令，都是入口。
-      </p>
-      <ul class="spec-list reveal" style="--d:.24s">
-        <li>全局快捷键捕捉弹窗</li>
-        <li>语音指令：创建 / 查询 / 改期 / 加标签（付费）</li>
-        <li>企业微信 / 邮件 / 短信 / 快捷指令</li>
-      </ul>
-    </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="capture" aria-hidden="true"></canvas>
-      <span class="fx-label">CAPTURE / GLOBAL HOTKEY</span>
-    </div>
-  </section>
+      <div class="app-window views-window">
+        <div class="win-bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="win-title">Taskstick</span></div>
+        <div class="views-stage">
 
-  <!-- e. 多端同步 -->
-  <section class="section feature" id="f-local">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">05 / SYNC</p>
-      <h3 class="reveal" style="--d:.08s">多端同步</h3>
-      <p class="reveal" style="--d:.16s">
-        变更链三方合并，离线可用，联网自动对齐；服务器仅作中转。同步为付费功能，本地功能不受影响。
-      </p>
-      <ul class="spec-list reveal" style="--d:.24s">
-        <li>变更链三方合并，冲突自动消解</li>
-        <li>服务器仅中转，离线完全可用</li>
-        <li>付费增值，数据主权在你手里</li>
-      </ul>
-    </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="sync" aria-hidden="true"></canvas>
-      <span class="fx-label">SYNC / 3-WAY MERGE</span>
-    </div>
-  </section>
+          <div class="view view-list is-active" id="view-list" role="tabpanel" aria-labelledby="tab-list">
+            <div class="vl-group">
+              <h4>Overdue <span>1</span></h4>
+              <div class="vl-row" style="--i:0"><span class="check"></span><b>Summarize invite-code channel data</b><em class="late">Overdue · 09/25</em><span class="tag">#growth</span></div>
+            </div>
+            <div class="vl-group">
+              <h4>Today <span>2</span></h4>
+              <div class="vl-row" style="--i:1"><span class="check c-blue"></span><b>Finalize release checklist</b><em>10:00</em><span class="tag">#product</span></div>
+              <div class="vl-row" style="--i:2"><span class="check c-orange"></span><b>Call Mom</b><em>18:30</em><span class="tag">#family</span></div>
+            </div>
+            <div class="vl-group">
+              <h4>This week <span>3</span></h4>
+              <div class="vl-row" style="--i:3"><span class="check c-orange"></span><b>Update download page copy</b><em>09/27</em><span class="tag">#growth</span></div>
+              <div class="vl-row" style="--i:4"><span class="check"></span><b>Draft dark-mode icon set</b><em>09/28</em><span class="tag">#design</span></div>
+              <div class="vl-row" style="--i:5"><span class="check c-blue"></span><b>Run all P0 regression tests</b><em>09/29</em><span class="tag">#dev</span></div>
+            </div>
+          </div>
 
-  <!-- f. 本地优先与数据主权 -->
-  <section class="section feature feature--flip" id="f-sources">
-    <div class="feature-copy">
-      <p class="sec-tag reveal">06 / LOCAL-FIRST</p>
-      <h3 class="reveal" style="--d:.08s">本地优先与数据主权</h3>
-      <p class="reveal" style="--d:.16s">
-        数据存在你的设备上。本地功能永久免费，不登录可用，账户仅用于同步。
-      </p>
-      <ul class="spec-list reveal" style="--d:.24s">
-        <li>本地功能永久免费</li>
-        <li>不登录可用全部本地功能</li>
-        <li>账户仅用于同步</li>
-      </ul>
-    </div>
-    <div class="fx-wrap reveal" style="--d:.2s">
-      <canvas class="fx-canvas" data-fx="shield" aria-hidden="true"></canvas>
-      <span class="fx-label">LOCAL-FIRST / YOUR DATA</span>
-    </div>
-  </section>
+          <div class="view view-cal" id="view-cal" role="tabpanel" aria-labelledby="tab-cal" hidden>
+            <div class="vc-head">
+              <b>September 2026</b>
+              <span class="vc-seg"><i>Month</i><i class="on">Week</i><i>Day</i></span>
+            </div>
+            <div class="vc-grid">
+              <div class="vc-day"><span>Fri 25</span><div class="ev ev-red" style="--i:0"><span>Invite-code channel data</span></div></div>
+              <div class="vc-day is-today"><span>Sat <b>26</b></span><div class="ev" style="--i:1"><i>10:00</i><span>Finalize release checklist</span></div><div class="ev ev-orange" style="--i:2"><i>18:30</i><span>Call Mom</span></div></div>
+              <div class="vc-day"><span>Sun 27</span><div class="ev ev-orange" style="--i:3"><span>Update download page copy</span></div></div>
+              <div class="vc-day"><span>Mon 28</span><div class="ev" style="--i:4"><span>Draft dark-mode icon set</span></div></div>
+              <div class="vc-day"><span>Tue 29</span><div class="ev ev-blue" style="--i:5"><span>Run P0 regression tests</span></div></div>
+              <div class="vc-day"><span>Wed 30</span></div>
+              <div class="vc-day"><span>Thu 1</span></div>
+            </div>
+          </div>
 
-  <!-- ================= 理念区 ================= -->
-  <section class="section philosophy" id="philosophy">
-    <p class="sec-tag reveal">PRINCIPLE</p>
-    <blockquote class="reveal" style="--d:.08s">
-      「本地数据免费且永远属于用户，<br />收费的是流动与智能，不是赎回自己的数据。」
+          <div class="view view-quad" id="view-quad" role="tabpanel" aria-labelledby="tab-quad" hidden>
+            <div class="vq q1"><h4><i></i>Urgent &amp; important</h4><div class="vq-item" style="--i:0">Summarize invite-code channel data</div><div class="vq-item" style="--i:1">Finalize release checklist</div></div>
+            <div class="vq q2"><h4><i></i>Important, not urgent</h4><div class="vq-item" style="--i:2">Run all P0 regression tests</div><div class="vq-item" style="--i:3">Call Mom</div></div>
+            <div class="vq q3"><h4><i></i>Urgent, not important</h4><div class="vq-item" style="--i:4">Update download page copy</div></div>
+            <div class="vq q4"><h4><i></i>Neither</h4><div class="vq-item" style="--i:5">Draft dark-mode icon set</div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Tour ================= -->
+<section class="section" id="tour">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">The real app</p>
+      <h2>Built for the Mac. Calm and clear.</h2>
+      <p class="sec-desc">A native macOS experience: smart lists, custom lists, tags and task sources all in the sidebar, so you see what matters today at a glance.</p>
+    </div>
+    <div class="tour reveal" data-demo="tour">
+      <div class="seg seg-sm" role="tablist" aria-label="Screens">
+        <button role="tab" aria-selected="true" data-shot="0">List</button>
+        <button role="tab" aria-selected="false" data-shot="1" tabindex="-1">Calendar</button>
+        <button role="tab" aria-selected="false" data-shot="2" tabindex="-1">AI</button>
+        <span class="seg-ind" aria-hidden="true"></span>
+      </div>
+      <div class="shot shot-lg tour-stage">
+        <img class="is-active" src="assets/img/app/tasks-en.webp" width="1280" height="800" alt="List view: tasks grouped into Overdue, Today, Tomorrow and This week, with smart lists and tags in the sidebar" loading="lazy" />
+        <img src="assets/img/app/calendar-en.webp" width="1280" height="800" alt="Calendar view: tasks laid out by date" loading="lazy" />
+        <img src="assets/img/app/agent-en.webp" width="1280" height="800" alt="AI view: scattered information organized into tasks" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= More ================= -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">More capabilities</p>
+      <h2>From capture to sync, one complete workflow</h2>
+    </div>
+    <div class="grid-6">
+      <article class="card reveal">
+        <span class="card-ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span>
+        <h3>Backlinks</h3>
+        <p>Tasks and notes link both ways. Open a task and you're back in its context.</p>
+      </article>
+      <article class="card reveal" style="--d:.05s">
+        <span class="card-ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span>
+        <h3>Smart lists</h3>
+        <p>Filter by tag, due date and source note, then save the result as lists like “Today” or “Work”.</p>
+      </article>
+      <article class="card reveal" style="--d:.1s">
+        <span class="card-ic"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span>
+        <h3>Quick capture</h3>
+        <p>A global shortcut opens a capture window. Jot it down and it lands in your list.</p>
+      </article>
+      <article class="card reveal">
+        <span class="card-ic"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></span>
+        <h3>Voice commands</h3>
+        <p>Create, find and reschedule tasks by voice: “Remind me to send the draft tomorrow at 3pm.” <span class="badge">Paid</span></p>
+      </article>
+      <article class="card reveal" style="--d:.05s">
+        <span class="card-ic"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14.3 4.9M4 12a8 8 0 0 1 14.3-4.9"/><path d="M18 3v4.5h-4.5M6 21v-4.5h4.5"/></svg></span>
+        <h3>Multi-device sync</h3>
+        <p>Three-way merge resolves conflicts automatically. Works offline, catches up when you're back online. <span class="badge">Paid</span></p>
+      </article>
+      <article class="card reveal" style="--d:.1s">
+        <span class="card-ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 7.5-2"/></svg></span>
+        <h3>No lock-in</h3>
+        <p>Everything is plain-text Markdown. Open it in any editor, take it anywhere.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Principles ================= -->
+<section class="section principles" id="principles">
+  <div class="container">
+    <blockquote class="manifesto reveal">
+      <p>Local data is free, and always yours.<br>We charge for flow and intelligence — <span>never for getting your own data back.</span></p>
     </blockquote>
-    <div class="principle-grid">
-      <div class="principle reveal" style="--d:.16s">
-        <p class="p-no">P·01</p>
-        <h4>本地功能永久免费</h4>
-        <p>记录、管理、筛选、捕捉，本地发生的一切不收费。</p>
+    <div class="grid-3">
+      <div class="principle reveal">
+        <span class="p-num">P · 01</span>
+        <h3>Todos stay put</h3>
+        <p>Tasks live in your .md notes; Taskstick only reads and gathers them. Uninstall the app and every <code>- [ ]</code> is still there.</p>
       </div>
-      <div class="principle reveal" style="--d:.24s">
-        <p class="p-no">P·02</p>
-        <h4>不登录可用</h4>
-        <p>不注册、不登录，可用全部本地功能。账户只为同步而存在。</p>
+      <div class="principle reveal" style="--d:.06s">
+        <span class="p-num">P · 02</span>
+        <h3>Local features, free forever</h3>
+        <p>Capturing, managing, filtering — everything that happens on your device costs nothing.</p>
       </div>
-      <div class="principle reveal" style="--d:.32s">
-        <p class="p-no">P·03</p>
-        <h4>离线完全可用</h4>
-        <p>断网不是降级。离线时功能完整，联网后自动对齐。</p>
+      <div class="principle reveal" style="--d:.12s">
+        <span class="p-num">P · 03</span>
+        <h3>No account needed</h3>
+        <p>Use every local feature without signing up or signing in. Accounts exist only for sync.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ================= 下载区 ================= -->
-  <section class="section download" id="download">
-    <p class="sec-tag reveal">DOWNLOAD</p>
-    <h2 class="reveal" style="--d:.08s">选择你的安装包。</h2>
-    <p class="dl-note reveal" id="download-note" data-download-status style="--d:.32s">macOS / Windows 桌面版 · 下载链接待配置 · 本地功能永久免费</p>
-    <div class="dl-row reveal" style="--d:.38s">
-      <a class="btn btn-ghost btn-lg" href="download.html">打开下载中心</a>
+<!-- ================= FAQ ================= -->
+<section class="section section-alt" id="faq">
+  <div class="container faq-wrap">
+    <div class="section-head section-head-left reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2>Questions, answered</h2>
+      <p class="sec-desc">Didn't find your answer? Write to <a href="mailto:admin@taskstick.com">admin@taskstick.com</a>.</p>
     </div>
-  </section>
+    <div class="faq reveal">
+      <details>
+        <summary>Where is my data stored?</summary>
+        <p>On your own Mac. Notes are ordinary .md files; Taskstick reads them and only writes back the task line you check off. Without sync, nothing leaves your device.</p>
+      </details>
+      <details>
+        <summary>Does it work with Obsidian and other note apps?</summary>
+        <p>Yes. Taskstick reads Markdown files directly, so keep writing in the tool you already use — Taskstick gathers the tasks into lists.</p>
+      </details>
+      <details>
+        <summary>What happens to my notes if I uninstall?</summary>
+        <p>Nothing. Tasks were always in your notes; every <code>- [ ]</code> and <code>- [x]</code> stays exactly as it is.</p>
+      </details>
+      <details>
+        <summary>Is it free? What costs money?</summary>
+        <p>Local features are free forever, including notes, task extraction and write-back, smart lists and all views. Multi-device sync and voice commands will be paid add-ons; pricing will be announced at launch.</p>
+      </details>
+      <details>
+        <summary>Do I need an account?</summary>
+        <p>No. Every local feature works without signing up or signing in. An account is only used when you turn on sync.</p>
+      </details>
+      <details>
+        <summary>Which systems are supported?</summary>
+        <p>macOS 13 or later, on both Apple silicon and Intel Macs. A Windows version is in preparation.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="section cta-final">
+  <div class="container cta-box reveal">
+    <img src="assets/img/taskstick-logo.svg" alt="" width="72" height="72" />
+    <h2>Get the todos in your notes<br>actually done</h2>
+    <p>Download for free, open your vault, and see your list in seconds.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href="download.html">Download free for macOS</a>
+    </div>
+    <p class="hero-meta">macOS 13+ · Apple silicon and Intel</p>
+  </div>
+</section>
+
 </main>
 
-<!-- ================= 页脚 ================= -->
 <footer class="footer">
-  <div class="footer-inner">
-    <div class="f-brand">
-      <p class="logo"><img class="logo-mark" src="assets/img/taskstick-logo.svg" alt="" aria-hidden="true" />Taskstick<span class="logo-dot">.</span></p>
-      <p class="f-slogan">笔记驱动，任务自成。</p>
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="#top"><img src="assets/img/taskstick-logo.svg" alt="" width="28" height="28" /><span>Taskstick</span></a>
+      <p>The todos in your notes, turned into a list.</p>
     </div>
-    <div class="f-meta">
-      <!-- 备案占位 -->
-      <p>© 2026 Taskstick 日事贴</p>
-      <p class="f-icp">京ICP备00000000号-0（占位）</p>
-    </div>
+    <nav class="footer-cols" aria-label="Footer">
+      <div>
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#views">Views</a>
+        <a href="download.html">Download</a>
+      </div>
+      <div>
+        <h4>About</h4>
+        <a href="#principles">Principles</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:admin@taskstick.com">admin@taskstick.com</a>
+        <a href="zh/" lang="zh-CN">中文</a>
+      </div>
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Taskstick</span>
   </div>
 </footer>
 
