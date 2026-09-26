@@ -76,24 +76,23 @@ function initSyncDemo(win) {
   // 打字内容与最终格式由 HTML 提供，中英文页共用
   const FORMATTED = lineC.querySelector('template').innerHTML.trim();
   const TEXT = lineC.querySelector('template').content.textContent.replace(/\s+/g, ' ').trim();
-
-  const setBox = (line, text) => { line.querySelector('.md-box').textContent = text; };
+  // 与 App 一致：键入 “- [ ] ” 后立即转成复选框
+  const TRIGGER = '- [ ] ';
 
   function finalState() {
     typed.innerHTML = FORMATTED;
+    lineC.classList.add('has-box');
     itemC.classList.add('is-in', 'settled');
     itemA.classList.add('is-done');
     lineA.classList.add('is-done');
-    setBox(lineA, '- [x]');
     count.textContent = '3';
   }
   if (reduced) { finalState(); return; }
 
   function reset() {
     typed.textContent = '';
-    lineC.classList.remove('is-typing', 'flash');
+    lineC.classList.remove('is-typing', 'flash', 'has-box', 'is-raw');
     lineA.classList.remove('is-done', 'flash');
-    setBox(lineA, '- [ ]');
     itemA.classList.remove('is-done');
     itemC.classList.remove('is-in', 'settled');
     count.textContent = '2';
@@ -116,7 +115,16 @@ function initSyncDemo(win) {
       await sleep(900);
 
       // 1. 在笔记里敲下一条任务行
-      lineC.classList.add('is-typing');
+      lineC.classList.add('is-typing', 'is-raw');
+      for (let i = 1; i <= TRIGGER.length; i++) {
+        typed.textContent = TRIGGER.slice(0, i);
+        await sleep(110);
+      }
+      await sleep(250);
+      typed.textContent = '';
+      lineC.classList.remove('is-raw');
+      lineC.classList.add('has-box');
+      await sleep(350);
       for (let i = 1; i <= TEXT.length; i++) {
         typed.textContent = TEXT.slice(0, i);
         await sleep(i <= 6 ? 70 : 85 + Math.random() * 50);
@@ -152,7 +160,6 @@ function initSyncDemo(win) {
       win.classList.add('s-write');
       await sleep(500);
       lineA.classList.add('is-done', 'flash');
-      setBox(lineA, '- [x]');
       win.classList.add('s-toast');
       await sleep(1400);
       lineA.classList.remove('flash');

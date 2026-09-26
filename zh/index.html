@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>日事贴 Taskstick — 笔记里的待办，自动变成清单</title>
-<meta name="description" content="写进 Markdown 笔记的 “- [ ]” 任务行，自动提取、汇成清单，勾选即写回笔记。AI 整理待办，清单 / 日历 / 四象限多种视图。本地优先，本地功能永久免费。" />
-<meta name="keywords" content="Taskstick,日事贴,Markdown 待办,笔记任务管理,任务提取,AI 整理,待办清单,四象限,日历,本地优先,macOS,双链" />
+<meta name="description" content="在笔记里写下 “- [ ]” 即成任务，自动汇成清单，勾选即同步回笔记。@ 双向链接、AI 整理待办，清单 / 日历 / 四象限多种视图。本地优先，本地功能永久免费。" />
+<meta name="keywords" content="Taskstick,日事贴,笔记待办,笔记任务管理,Markdown 导出,Obsidian 导入,任务提取,AI 整理,待办清单,四象限,日历,本地优先,macOS,双链" />
 <meta name="author" content="Taskstick" />
 <link rel="canonical" href="https://taskstick.com/zh/" />
 <link rel="alternate" hreflang="zh-CN" href="https://taskstick.com/zh/" />
@@ -13,11 +13,11 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Taskstick 日事贴" />
 <meta property="og:title" content="日事贴 Taskstick — 笔记里的待办，自动变成清单" />
-<meta property="og:description" content="Markdown 笔记里的 “- [ ]” 自动汇成清单，勾选即写回笔记。本地优先，本地功能永久免费。" />
+<meta property="og:description" content="笔记里的 “- [ ]” 自动汇成清单，勾选即同步回笔记。本地优先，本地功能永久免费。" />
 <meta property="og:locale" content="zh_CN" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="日事贴 Taskstick — 笔记里的待办，自动变成清单" />
-<meta name="twitter:description" content="Markdown 笔记里的 “- [ ]” 自动汇成清单，勾选即写回笔记。本地优先。" />
+<meta name="twitter:description" content="笔记里的 “- [ ]” 自动汇成清单，勾选即同步回笔记。本地优先。" />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e0c" />
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f7f5" />
 <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
@@ -36,7 +36,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
   "name": "日事贴 Taskstick",
   "operatingSystem": "macOS",
   "applicationCategory": "ProductivityApplication",
-  "description": "日事贴读取你的 Markdown 笔记库，把 “- [ ]” 任务行提取成任务、汇成清单，勾选即写回笔记。AI 整理待办，清单 / 日历 / 四象限视图，双向链接，本地优先，本地功能永久免费、无需登录。",
+  "description": "在日事贴的笔记里写下 “- [ ]” 即成任务，自动汇成清单，勾选即同步回笔记。@ 双向链接，AI 整理待办，清单 / 日历 / 四象限视图；支持从 Obsidian、flomo 导入，随时导出为 Markdown。本地优先，本地功能永久免费、无需登录。",
   "inLanguage": "zh-CN",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY", "description": "本地功能永久免费；同步与 AI 等为付费增值" }
 }
@@ -74,9 +74,9 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
 <!-- ================= Hero ================= -->
 <section class="hero" id="top">
   <div class="container hero-copy">
-    <p class="eyebrow reveal">Markdown 笔记 × 待办清单 · macOS</p>
+    <p class="eyebrow reveal">笔记 × 待办清单 · macOS</p>
     <h1 class="reveal" style="--d:.06s">笔记里的待办，<br>自动变成清单</h1>
-    <p class="lede reveal" style="--d:.12s">在任意 Markdown 笔记里写下 <code>- [ ]</code>，日事贴把它提取成任务、汇进你的清单；在清单里勾掉，笔记同步写成 <code>- [x]</code>。</p>
+    <p class="lede reveal" style="--d:.12s">在笔记里写下 <code>- [ ]</code>，它就是一条任务，自动汇进你的清单；在清单里勾掉，笔记里的那一行也同步打勾。</p>
     <div class="cta-row reveal" style="--d:.18s">
       <a class="btn btn-primary btn-lg" href="download.html">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="apple"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
@@ -97,16 +97,16 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
         <div class="pane pane-note">
           <div class="pane-head">
             <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
-            本周计划.md
+            本周计划
             <span class="pane-sub">笔记</span>
           </div>
           <div class="md">
-            <div class="md-line md-h"># 本周计划</div>
-            <div class="md-line md-p">首页改版进入最后一周，按顺序推进。</div>
-            <div class="md-line md-task" data-id="a"><span class="md-box">- [ ]</span> 确认发布清单终稿 <span class="md-date">今天 10:00</span> <span class="md-tag">#产品</span></div>
-            <div class="md-line md-task" data-id="b"><span class="md-box">- [ ]</span> 回归测试全部 P0 用例 <span class="md-date">周四</span> <span class="md-tag">#开发</span></div>
-            <div class="md-line md-task md-new" data-id="c"><template><span class="md-box">- [ ]</span> 给妈妈回电话 <span class="md-date">周五</span> <span class="md-tag">#家庭</span></template><span class="md-typed"></span><span class="caret"></span></div>
-            <div class="md-line md-p md-faint">参考 [[发布日检查清单]]</div>
+            <div class="md-line md-h">本周计划</div>
+            <div class="md-line md-p">发布节奏参考 <span class="noteref">发布日检查清单</span></div>
+            <div class="md-line md-task" data-id="a"><span class="nt">确认发布清单终稿 <span class="md-date">今天 10:00</span></span> <span class="md-tag">#产品</span></div>
+            <div class="md-line md-task" data-id="b"><span class="nt">回归测试全部 P0 用例 <span class="md-date">周四</span></span> <span class="md-tag">#开发</span></div>
+            <div class="md-line md-task md-new" data-id="c"><template><span class="nt">给妈妈回电话 <span class="md-date">周五</span></span> <span class="md-tag">#家庭</span></template><span class="md-typed"></span><span class="caret"></span></div>
+            <div class="md-refs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></svg>被引用 · 2<span class="refchip">周一站会纪要</span><span class="refchip">季度 OKR 摘要</span></div>
           </div>
         </div>
 
@@ -126,26 +126,26 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
           <ul class="tlist">
             <li data-id="a">
               <span class="check"></span>
-              <div><b>确认发布清单终稿</b><small><em>今天 10:00</em><span class="tag">#产品</span><span class="src">本周计划.md</span></small></div>
+              <div><b>确认发布清单终稿</b><small><em>今天 10:00</em><span class="tag">#产品</span><span class="src">本周计划</span></small></div>
             </li>
             <li data-id="b">
               <span class="check"></span>
-              <div><b>回归测试全部 P0 用例</b><small><em>周四</em><span class="tag">#开发</span><span class="src">本周计划.md</span></small></div>
+              <div><b>回归测试全部 P0 用例</b><small><em>周四</em><span class="tag">#开发</span><span class="src">本周计划</span></small></div>
             </li>
             <li data-id="c" class="is-new">
               <span class="check"></span>
-              <div><b>给妈妈回电话</b><small><em>周五</em><span class="tag">#家庭</span><span class="src">本周计划.md</span></small></div>
+              <div><b>给妈妈回电话</b><small><em>周五</em><span class="tag">#家庭</span><span class="src">本周计划</span></small></div>
             </li>
           </ul>
         </div>
       </div>
       <svg class="pointer" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 8-6 1.5L10 19z"/></svg>
-      <div class="toast" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>已写回 本周计划.md</div>
+      <div class="toast" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>已同步回 本周计划</div>
     </div>
   </div>
 
   <div class="container trust">
-    <span><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>纯 .md 文件，不锁定</span>
+    <span><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>随时导出为 Markdown</span>
     <span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>数据存在你的 Mac 上</span>
     <span><svg viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg>离线完全可用</span>
     <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>不登录也能用</span>
@@ -158,19 +158,19 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
     <div class="section-head reveal">
       <p class="eyebrow">核心功能</p>
       <h2>待办写在笔记里，行动落在清单上</h2>
-      <p class="sec-desc">不用把任务从笔记搬到另一个 App。日事贴读取你的笔记库，把散落各处的任务行汇成一份能执行的清单。</p>
+      <p class="sec-desc">不用把任务从笔记搬到另一个 App。在日事贴里记笔记，散落各处的任务行自动汇成一份能执行的清单。</p>
     </div>
 
     <div class="feature">
       <div class="feature-copy reveal">
         <span class="kicker">01 · 提取与写回</span>
         <h3>笔记就是你的待办清单</h3>
-        <p>写在任意 .md 笔记里的任务行，自动变成真实任务；在清单里勾掉，笔记里的 <code>- [ ]</code> 同步写成 <code>- [x]</code>，两边永远一致。</p>
+        <p>笔记里写下的任务行，自动变成真实任务；在清单里勾掉，笔记里的那一行同步打勾，两边永远一致。</p>
         <ul class="ticks">
-          <li>整库扫描，或只跟踪指定文件夹</li>
-          <li>支持内联日期、#标签、循环语法</li>
+          <li>输入 <code>- [ ]</code> 或 <code>-【】</code>，即成任务行</li>
+          <li>自然语言日期（明天、后天 15:00）与 #标签</li>
           <li>任务可点回原笔记，上下文不丢</li>
-          <li>笔记仍是纯文本，Obsidian、思源等工具随时能打开</li>
+          <li>可从 Obsidian、flomo 导入原有笔记</li>
         </ul>
       </div>
       <figure class="feature-media reveal" style="--d:.1s">
@@ -213,7 +213,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
             </div>
             <div class="ai-actions">
               <span class="fake-btn">确认写入</span>
-              <span class="ai-dest">写入 周会纪要.md</span>
+              <span class="ai-dest">写入 周会纪要</span>
               <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>已写入 3 条任务</span>
             </div>
           </div>
@@ -326,7 +326,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <article class="card reveal">
         <span class="card-ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span>
         <h3>双向链接</h3>
-        <p>任务和笔记互相回溯，碎片连成网络，点开任务就能回到它的上下文。</p>
+        <p>输入 <code>@</code> 引用任务、笔记或清单；每条笔记下方列出「引用」与「被引用」，一点就回到上下文。</p>
       </article>
       <article class="card reveal" style="--d:.05s">
         <span class="card-ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span>
@@ -350,8 +350,8 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       </article>
       <article class="card reveal" style="--d:.1s">
         <span class="card-ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 7.5-2"/></svg></span>
-        <h3>不被锁定</h3>
-        <p>所有内容都是纯文本 Markdown，任何编辑器都能打开，随时可以带走。</p>
+        <h3>数据随时带走</h3>
+        <p>笔记与任务可随时导出为 Markdown；从 Obsidian、flomo 迁移过来，也只需一次导入。</p>
       </article>
     </div>
   </div>
@@ -367,7 +367,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <div class="principle reveal">
         <span class="p-num">P · 01</span>
         <h3>待办不搬家</h3>
-        <p>任务就住在你的 .md 笔记里，日事贴只做读取与汇总。卸载 App，笔记里的 <code>- [ ]</code> 一个不少。</p>
+        <p>任务就写在笔记里，不用再复制到另一个 App；清单里勾掉，笔记里那一行也跟着打勾。</p>
       </div>
       <div class="principle reveal" style="--d:.06s">
         <span class="p-num">P · 02</span>
@@ -394,15 +394,15 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
     <div class="faq reveal">
       <details>
         <summary>我的数据存在哪里？</summary>
-        <p>存在你自己的 Mac 上。笔记就是普通的 .md 文件，日事贴只读取并在勾选时写回任务行。不开同步，数据不会离开你的设备。</p>
+        <p>存在你自己 Mac 上的本地数据库里。不开同步，数据不会离开你的设备；也可以随时在设置里导出为 Markdown 备份。</p>
       </details>
       <details>
-        <summary>能配合 Obsidian、思源这类笔记工具用吗？</summary>
-        <p>可以。日事贴直接读取 Markdown 文件，你可以继续用原来的工具写笔记，日事贴负责把其中的任务汇成清单。</p>
+        <summary>能从 Obsidian、flomo 迁移过来吗？</summary>
+        <p>可以。在设置里选择 Obsidian 笔记库文件夹或 flomo 导出文件，笔记、<code>- [ ]</code> 任务、#标签和 <code>[[双链]]</code> 会一并导入。导入是一次性复制，原文件保持不变。</p>
       </details>
       <details>
         <summary>卸载日事贴后，笔记会怎样？</summary>
-        <p>什么都不会变。任务一直写在你的笔记里，卸载后 <code>- [ ]</code> 和 <code>- [x]</code> 原样保留。</p>
+        <p>数据保存在你 Mac 本地，删除 App 本身不会清除它们。如果不再使用，建议先在设置里导出为 Markdown，任务会以 <code>- [ ]</code> / <code>- [x]</code> 保留，任何编辑器都能打开。</p>
       </details>
       <details>
         <summary>收费吗？哪些功能要付费？</summary>
@@ -425,7 +425,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
   <div class="container cta-box reveal">
     <img src="../assets/img/taskstick-logo.svg" alt="" width="72" height="72" />
     <h2>让笔记里的待办，<br>真正被做完</h2>
-    <p>免费下载，打开你的笔记库，几秒钟就能看到汇好的清单。</p>
+    <p>免费下载，写下第一条 <code>- [ ]</code>，它马上出现在你的清单里。</p>
     <div class="cta-row">
       <a class="btn btn-primary btn-lg" href="download.html">免费下载 macOS 版</a>
     </div>

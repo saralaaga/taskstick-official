@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Taskstick — The todos in your notes, turned into a list</title>
-<meta name="description" content="Every “- [ ]” you write in a Markdown note is extracted into a task and gathered into one list; check it off and the note updates to “- [x]”. AI organizing, list / calendar / quadrant views. Local-first, local features free forever." />
-<meta name="keywords" content="Taskstick, markdown task manager, tasks in notes, checkbox todos, task extraction, AI organizing, Eisenhower matrix, calendar, local-first, macOS, backlinks" />
+<meta name="description" content="Type “- [ ]” in a note and it becomes a task in one list; check it off and the note updates too. @ links, AI organizing, list / calendar / quadrant views. Local-first, local features free forever." />
+<meta name="keywords" content="Taskstick, notes and to-do app, tasks in notes, markdown export, Obsidian import, checkbox todos, task extraction, AI organizing, Eisenhower matrix, calendar, local-first, macOS, backlinks" />
 <meta name="author" content="Taskstick" />
 <link rel="canonical" href="https://taskstick.com/" />
 <link rel="alternate" hreflang="en" href="https://taskstick.com/" />
@@ -13,11 +13,11 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Taskstick" />
 <meta property="og:title" content="Taskstick — The todos in your notes, turned into a list" />
-<meta property="og:description" content="“- [ ]” lines in your Markdown notes become one list; check them off and the note updates. Local-first, local features free forever." />
+<meta property="og:description" content="“- [ ]” lines in your notes become one list; check them off and the note updates. Local-first, local features free forever." />
 <meta property="og:locale" content="en" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Taskstick — The todos in your notes, turned into a list" />
-<meta name="twitter:description" content="“- [ ]” lines in your Markdown notes become one list; check them off and the note updates. Local-first." />
+<meta name="twitter:description" content="“- [ ]” lines in your notes become one list; check them off and the note updates. Local-first." />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e0c" />
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f7f5" />
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
@@ -36,7 +36,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
   "name": "Taskstick",
   "operatingSystem": "macOS",
   "applicationCategory": "ProductivityApplication",
-  "description": "Taskstick reads your Markdown notes, extracts “- [ ]” lines into tasks and gathers them into lists; checking one off writes back to the note. AI organizing, list / calendar / quadrant views, backlinks. Local-first, local features free forever, no sign-in required.",
+  "description": "Type “- [ ]” in a Taskstick note and it becomes a task, gathered into your lists; checking one off updates the note. @ links and backlinks, AI organizing, list / calendar / quadrant views, import from Obsidian and flomo, export to Markdown anytime. Local-first, local features free forever, no sign-in required.",
   "inLanguage": "en",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Local features free forever; sync and voice are paid add-ons" }
 }
@@ -74,9 +74,9 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
 <!-- ================= Hero ================= -->
 <section class="hero" id="top">
   <div class="container hero-copy">
-    <p class="eyebrow reveal">Markdown notes × to-do lists · macOS</p>
+    <p class="eyebrow reveal">Notes × to-do lists · macOS</p>
     <h1 class="reveal" style="--d:.06s">The todos in your notes,<br>turned into a list</h1>
-    <p class="lede reveal" style="--d:.12s">Write <code>- [ ]</code> in any Markdown note and Taskstick turns it into a task in your list. Check it off in the list, and the note updates to <code>- [x]</code>.</p>
+    <p class="lede reveal" style="--d:.12s">Type <code>- [ ]</code> in a note and it becomes a task in your list. Check it off in the list, and it&rsquo;s checked in the note too.</p>
     <div class="cta-row reveal" style="--d:.18s">
       <a class="btn btn-primary btn-lg" href="download.html">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="apple"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
@@ -97,16 +97,16 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
         <div class="pane pane-note">
           <div class="pane-head">
             <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
-            This week.md
+            This week
             <span class="pane-sub">Note</span>
           </div>
           <div class="md">
-            <div class="md-line md-h"># This week</div>
-            <div class="md-line md-p">Last week of the homepage redesign — ship in order.</div>
-            <div class="md-line md-task" data-id="a"><span class="md-box">- [ ]</span> Finalize release checklist <span class="md-date">today 10:00</span> <span class="md-tag">#product</span></div>
-            <div class="md-line md-task" data-id="b"><span class="md-box">- [ ]</span> Run all P0 regression tests <span class="md-date">Thu</span> <span class="md-tag">#dev</span></div>
-            <div class="md-line md-task md-new" data-id="c"><template><span class="md-box">- [ ]</span> Call Mom <span class="md-date">Fri</span> <span class="md-tag">#family</span></template><span class="md-typed"></span><span class="caret"></span></div>
-            <div class="md-line md-p md-faint">See [[Release-day checklist]]</div>
+            <div class="md-line md-h">This week</div>
+            <div class="md-line md-p">Ship it the way <span class="noteref">Release-day checklist</span> says</div>
+            <div class="md-line md-task" data-id="a"><span class="nt">Finalize release checklist <span class="md-date">today 10:00</span></span> <span class="md-tag">#product</span></div>
+            <div class="md-line md-task" data-id="b"><span class="nt">Run all P0 regression tests <span class="md-date">Thu</span></span> <span class="md-tag">#dev</span></div>
+            <div class="md-line md-task md-new" data-id="c"><template><span class="nt">Call Mom <span class="md-date">Fri</span></span> <span class="md-tag">#family</span></template><span class="md-typed"></span><span class="caret"></span></div>
+            <div class="md-refs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></svg>Backlinks · 2<span class="refchip">Monday standup</span><span class="refchip">Quarterly OKRs</span></div>
           </div>
         </div>
 
@@ -126,26 +126,26 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
           <ul class="tlist">
             <li data-id="a">
               <span class="check"></span>
-              <div><b>Finalize release checklist</b><small><em>Today 10:00</em><span class="tag">#product</span><span class="src">This week.md</span></small></div>
+              <div><b>Finalize release checklist</b><small><em>Today 10:00</em><span class="tag">#product</span><span class="src">This week</span></small></div>
             </li>
             <li data-id="b">
               <span class="check"></span>
-              <div><b>Run all P0 regression tests</b><small><em>Thu</em><span class="tag">#dev</span><span class="src">This week.md</span></small></div>
+              <div><b>Run all P0 regression tests</b><small><em>Thu</em><span class="tag">#dev</span><span class="src">This week</span></small></div>
             </li>
             <li data-id="c" class="is-new">
               <span class="check"></span>
-              <div><b>Call Mom</b><small><em>Fri</em><span class="tag">#family</span><span class="src">This week.md</span></small></div>
+              <div><b>Call Mom</b><small><em>Fri</em><span class="tag">#family</span><span class="src">This week</span></small></div>
             </li>
           </ul>
         </div>
       </div>
       <svg class="pointer" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 8-6 1.5L10 19z"/></svg>
-      <div class="toast" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Written back to This week.md</div>
+      <div class="toast" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Synced back to This week</div>
     </div>
   </div>
 
   <div class="container trust">
-    <span><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Plain .md files, no lock-in</span>
+    <span><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Export to Markdown anytime</span>
     <span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Data stays on your Mac</span>
     <span><svg viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg>Fully works offline</span>
     <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>No sign-in required</span>
@@ -158,19 +158,19 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
     <div class="section-head reveal">
       <p class="eyebrow">Core features</p>
       <h2>Write todos in notes. Get them done from a list.</h2>
-      <p class="sec-desc">No more copying tasks from your notes into another app. Taskstick reads your vault and gathers every scattered task line into one list you can act on.</p>
+      <p class="sec-desc">No more copying tasks from your notes into another app. Write your notes in Taskstick and every scattered task line gathers into one list you can act on.</p>
     </div>
 
     <div class="feature">
       <div class="feature-copy reveal">
         <span class="kicker">01 · Extract &amp; write back</span>
         <h3>Your notes are your to-do list</h3>
-        <p>Task lines in any .md note become real tasks. Check one off in the list and the note's <code>- [ ]</code> becomes <code>- [x]</code> — both sides always agree.</p>
+        <p>Task lines in your notes become real tasks. Check one off in the list and it&rsquo;s checked in the note too — both sides always agree.</p>
         <ul class="ticks">
-          <li>Scan your whole vault, or only chosen folders</li>
-          <li>Inline dates, #tags and recurring syntax</li>
+          <li>Type <code>- [ ]</code> or press ⌘⇧7 to start a task line</li>
+          <li>Natural-language dates (tomorrow, Fri 3pm) and #tags</li>
           <li>Jump from any task back to its note</li>
-          <li>Notes stay plain text — open them in Obsidian or any editor</li>
+          <li>Import your existing notes from Obsidian or flomo</li>
         </ul>
       </div>
       <figure class="feature-media reveal" style="--d:.1s">
@@ -213,7 +213,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
             </div>
             <div class="ai-actions">
               <span class="fake-btn">Add to note</span>
-              <span class="ai-dest">To Weekly sync.md</span>
+              <span class="ai-dest">To Weekly sync</span>
               <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>3 tasks added</span>
             </div>
           </div>
@@ -350,8 +350,8 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       </article>
       <article class="card reveal" style="--d:.1s">
         <span class="card-ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 7.5-2"/></svg></span>
-        <h3>No lock-in</h3>
-        <p>Everything is plain-text Markdown. Open it in any editor, take it anywhere.</p>
+        <h3>Take your data anywhere</h3>
+        <p>Export notes and tasks to Markdown anytime. Coming from Obsidian or flomo? Bring your notes over in one import.</p>
       </article>
     </div>
   </div>
@@ -367,7 +367,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <div class="principle reveal">
         <span class="p-num">P · 01</span>
         <h3>Todos stay put</h3>
-        <p>Tasks live in your .md notes; Taskstick only reads and gathers them. Uninstall the app and every <code>- [ ]</code> is still there.</p>
+        <p>Tasks are written right in your notes — no copying them into another app. Check one off in the list and the note follows.</p>
       </div>
       <div class="principle reveal" style="--d:.06s">
         <span class="p-num">P · 02</span>
@@ -394,15 +394,15 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
     <div class="faq reveal">
       <details>
         <summary>Where is my data stored?</summary>
-        <p>On your own Mac. Notes are ordinary .md files; Taskstick reads them and only writes back the task line you check off. Without sync, nothing leaves your device.</p>
+        <p>In a local database on your own Mac. Without sync, nothing leaves your device — and you can export everything to Markdown from Settings anytime.</p>
       </details>
       <details>
-        <summary>Does it work with Obsidian and other note apps?</summary>
-        <p>Yes. Taskstick reads Markdown files directly, so keep writing in the tool you already use — Taskstick gathers the tasks into lists.</p>
+        <summary>Can I move over from Obsidian or flomo?</summary>
+        <p>Yes. In Settings, pick your Obsidian vault folder or a flomo export; notes, <code>- [ ]</code> tasks, #tags and <code>[[links]]</code> all come along. Import is a one-time copy — your original files stay untouched.</p>
       </details>
       <details>
         <summary>What happens to my notes if I uninstall?</summary>
-        <p>Nothing. Tasks were always in your notes; every <code>- [ ]</code> and <code>- [x]</code> stays exactly as it is.</p>
+        <p>Your data is stored locally on your Mac, and deleting the app doesn&rsquo;t erase it. If you&rsquo;re leaving, export to Markdown from Settings first — tasks are kept as <code>- [ ]</code> / <code>- [x]</code> and open in any editor.</p>
       </details>
       <details>
         <summary>Is it free? What costs money?</summary>
@@ -425,7 +425,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
   <div class="container cta-box reveal">
     <img src="assets/img/taskstick-logo.svg" alt="" width="72" height="72" />
     <h2>Get the todos in your notes<br>actually done</h2>
-    <p>Download for free, open your vault, and see your list in seconds.</p>
+    <p>Download for free, type your first <code>- [ ]</code>, and watch it land in your list.</p>
     <div class="cta-row">
       <a class="btn btn-primary btn-lg" href="download.html">Download free for macOS</a>
     </div>
