@@ -102,10 +102,10 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
           </div>
           <div class="md">
             <div class="md-line md-h">This week</div>
-            <div class="md-line md-p">Ship it the way <span class="noteref">Release-day checklist</span> says</div>
-            <div class="md-line md-task" data-id="a"><span class="nt">Finalize release checklist <span class="md-date">today 10:00</span></span> <span class="md-tag">#product</span></div>
-            <div class="md-line md-task" data-id="b"><span class="nt">Run all P0 regression tests <span class="md-date">Thu</span></span> <span class="md-tag">#dev</span></div>
-            <div class="md-line md-task md-new" data-id="c"><template><span class="nt">Call Mom <span class="md-date">Fri</span></span> <span class="md-tag">#family</span></template><span class="md-typed"></span><span class="caret"></span></div>
+            <div class="md-line md-p">Pacing follows <span class="noteref">Launch Day Checklist</span></div>
+            <div class="md-line md-task" data-id="a"><span class="nt strike">Confirm the final launch checklist <span class="md-date">today 10:00</span></span> <span class="md-tag">#Product</span></div>
+            <div class="md-line md-task" data-id="b"><span class="nt strike">Regression-test all P0 cases <span class="md-date">Wed</span></span> <span class="md-tag">#Dev</span></div>
+            <div class="md-line md-task md-new" data-id="c"><template><span class="nt strike">Call Mom <span class="md-date">Fri</span></span> <span class="md-tag">#Family</span></template><span class="md-typed"></span><span class="caret"></span></div>
             <div class="md-refs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></svg>Backlinks · 2<span class="refchip">Monday standup</span><span class="refchip">Quarterly OKRs</span></div>
           </div>
         </div>
@@ -125,16 +125,16 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
           </div>
           <ul class="tlist">
             <li data-id="a">
-              <span class="check"></span>
-              <div><b>Finalize release checklist</b><small><em>Today 10:00</em><span class="tag">#product</span><span class="src">This week</span></small></div>
+              <span class="check c-orange"></span>
+              <div><b class="strike">Confirm the final launch checklist</b><small><span class="sd"></span><em>09/27 10:00</em><span class="tag">#Product</span></small></div>
             </li>
             <li data-id="b">
               <span class="check"></span>
-              <div><b>Run all P0 regression tests</b><small><em>Thu</em><span class="tag">#dev</span><span class="src">This week</span></small></div>
+              <div><b class="strike">Regression-test all P0 cases</b><small><span class="sd"></span><em>09/30</em><span class="tag">#Dev</span></small></div>
             </li>
             <li data-id="c" class="is-new">
               <span class="check"></span>
-              <div><b>Call Mom</b><small><em>Fri</em><span class="tag">#family</span><span class="src">This week</span></small></div>
+              <div><b class="strike">Call Mom</b><small><span class="sd"></span><em>10/02</em><span class="tag">#Family</span></small></div>
             </li>
           </ul>
         </div>
@@ -175,7 +175,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       </div>
       <figure class="feature-media reveal" style="--d:.1s">
         <div class="shot">
-          <img src="assets/img/app/tasks-en.webp" width="1280" height="800" alt="Taskstick list view: tasks grouped into Overdue, Today and Tomorrow, each showing its source note" loading="lazy" />
+          <img src="assets/img/app/tasks-en.webp" width="1920" height="1200" alt="Taskstick list view: tasks grouped into Overdue, Today and Tomorrow, each showing its source note" loading="lazy" />
         </div>
       </figure>
     </div>
@@ -185,7 +185,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <div class="feature-copy reveal">
         <span class="kicker">02 · AI organizing</span>
         <h3>Paste a paragraph, get back a to-do list</h3>
-        <p>Meeting notes, chat logs, article snippets — paste them in. AI picks out the tasks, due dates and tags, and <strong>nothing is written to your notes until you confirm</strong>.</p>
+        <p>Meeting notes, chat logs, article snippets — paste them in. AI picks out the tasks, due dates and tags, and <strong>nothing is saved until you confirm</strong>.</p>
         <ul class="ticks">
           <li>Extracts tasks and due dates</li>
           <li>Suggests tags and links related notes</li>
@@ -194,27 +194,31 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
         </ul>
       </div>
       <figure class="feature-media reveal" style="--d:.1s">
-        <div class="app-window demo-ai" data-demo="ai" role="img" aria-label="Demo: after pasting meeting notes, AI finds three tasks with dates and tags and writes them to a note once confirmed">
+        <div class="app-window demo-ai" data-demo="ai" role="img" aria-label="Demo: after pasting meeting notes, AI drafts three dated tasks and adds them to your lists once you save">
           <div class="win-bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="win-title">AI organize</span></div>
           <div class="ai-body" aria-hidden="true">
-            <div class="msg msg-user">
+            <div class="msg-user">
               <span class="msg-label">Weekly sync notes</span>
-              Lin sends the homepage redesign by next Wednesday; confirm privacy terms with legal on Friday; ship v2.1 by month end — run regression tests first.
+              Lin sends the homepage redesign by Wednesday; confirm privacy terms with legal on Friday; ship v2.1 by month end — run regression tests first.
             </div>
-            <div class="msg msg-ai">
+            <div class="msg-ai">
               <span class="spark"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span>
-              <span class="thinking">Finding tasks<i></i><i></i><i></i></span>
-              <span class="found">Found 3 tasks</span>
+              <span class="thinking">Organizing<i></i><i></i><i></i></span>
+              <span class="found">Done — found 3 tasks</span>
             </div>
-            <div class="ai-cards">
-              <div class="ai-card" style="--i:0"><span class="check"></span><b>Deliver homepage redesign</b><em>Next Wed</em><span class="tag">#design</span></div>
-              <div class="ai-card" style="--i:1"><span class="check"></span><b>Confirm privacy terms with legal</b><em>Fri</em><span class="tag">#legal</span></div>
-              <div class="ai-card" style="--i:2"><span class="check"></span><b>Ship v2.1 after regression tests</b><em>Sep 30</em><span class="tag">#release</span></div>
-            </div>
-            <div class="ai-actions">
-              <span class="fake-btn">Add to note</span>
-              <span class="ai-dest">To Weekly sync</span>
-              <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>3 tasks added</span>
+            <div class="ai-draft">
+              <div class="ai-draft-title">Weekly sync · action items</div>
+              <p class="ai-draft-summary">Found 3 tasks in the notes and filled in the dates. Save to add them to your lists.</p>
+              <div class="ai-cards">
+                <div class="ai-card"><span class="mini-box"></span><b>Deliver homepage redesign</b><em>Task 09/30</em><small>Website</small></div>
+                <div class="ai-card"><span class="mini-box"></span><b>Confirm privacy terms with legal</b><em>Task 10/02</em><small>Work</small></div>
+                <div class="ai-card"><span class="mini-box"></span><b>Ship v2.1 after regression tests</b><em>Task 09/30</em><small>Launch Sprint</small></div>
+              </div>
+              <div class="ai-actions">
+                <span class="ai-toggle"><span class="mini-box off"></span>Save as note</span>
+                <span class="fake-btn"><span class="t-save">Save</span><span class="t-saved">Saved</span></span>
+                <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>3 tasks added to your lists</span>
+              </div>
             </div>
           </div>
         </div>
@@ -245,44 +249,37 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
         <div class="views-stage">
 
           <div class="view view-list is-active" id="view-list" role="tabpanel" aria-labelledby="tab-list">
-            <div class="vl-group">
-              <h4>Overdue <span>1</span></h4>
-              <div class="vl-row" style="--i:0"><span class="check"></span><b>Summarize invite-code channel data</b><em class="late">Overdue · 09/25</em><span class="tag">#growth</span></div>
-            </div>
-            <div class="vl-group">
-              <h4>Today <span>2</span></h4>
-              <div class="vl-row" style="--i:1"><span class="check c-blue"></span><b>Finalize release checklist</b><em>10:00</em><span class="tag">#product</span></div>
-              <div class="vl-row" style="--i:2"><span class="check c-orange"></span><b>Call Mom</b><em>18:30</em><span class="tag">#family</span></div>
-            </div>
-            <div class="vl-group">
-              <h4>This week <span>3</span></h4>
-              <div class="vl-row" style="--i:3"><span class="check c-orange"></span><b>Update download page copy</b><em>09/27</em><span class="tag">#growth</span></div>
-              <div class="vl-row" style="--i:4"><span class="check"></span><b>Draft dark-mode icon set</b><em>09/28</em><span class="tag">#design</span></div>
-              <div class="vl-row" style="--i:5"><span class="check c-blue"></span><b>Run all P0 regression tests</b><em>09/29</em><span class="tag">#dev</span></div>
-            </div>
+            <div class="group-h"><h4>Overdue</h4><span>1</span></div>
+            <div class="task"><span class="check"></span><div><b>Aggregate invite-channel data</b><div class="task-meta"><span class="sd"></span><span class="late">Overdue · 09/26</span><span class="tag">#Growth</span></div></div></div>
+            <div class="group-h"><h4>Today</h4><span>1</span></div>
+            <div class="task"><span class="check c-orange"></span><div><b>Confirm the final launch checklist</b><div class="task-meta"><span class="sd"></span><span>09/27 10:00</span><span class="tag">#Product</span></div></div></div>
+            <div class="group-h"><h4>Tomorrow</h4><span>4</span></div>
+            <div class="task"><span class="check c-orange"></span><div><b>Update the download page copy</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#Growth</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>Follow up on the analytics regression</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#Dev</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>Fix list view empty-state spacing</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#Design</span><span class="ex">Visual work follows the rhythm of the Launch Day Checklist.</span></div></div></div>
+            <div class="task"><span class="check c-orange"></span><div><b>Freeze code and bump the version</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#Launch</span></div></div></div>
+            <div class="group-h"><h4>This Week</h4><span>6</span></div>
+            <div class="task"><span class="check"></span><div><b>Draft the weekly changelog</b><div class="task-meta"><span class="sd"></span><span>09/29</span><span class="tag">#Growth</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>Watch crash and sync metrics</b><div class="task-meta"><span class="sd"></span><span>09/29 18:00</span><span class="tag">#Dev</span></div></div></div>
           </div>
 
           <div class="view view-cal" id="view-cal" role="tabpanel" aria-labelledby="tab-cal" hidden>
-            <div class="vc-head">
-              <b>September 2026</b>
-              <span class="vc-seg"><i>Month</i><i class="on">Week</i><i>Day</i></span>
-            </div>
-            <div class="vc-grid">
-              <div class="vc-day"><span>Fri 25</span><div class="ev ev-red" style="--i:0"><span>Invite-code channel data</span></div></div>
-              <div class="vc-day is-today"><span>Sat <b>26</b></span><div class="ev" style="--i:1"><i>10:00</i><span>Finalize release checklist</span></div><div class="ev ev-orange" style="--i:2"><i>18:30</i><span>Call Mom</span></div></div>
-              <div class="vc-day"><span>Sun 27</span><div class="ev ev-orange" style="--i:3"><span>Update download page copy</span></div></div>
-              <div class="vc-day"><span>Mon 28</span><div class="ev" style="--i:4"><span>Draft dark-mode icon set</span></div></div>
-              <div class="vc-day"><span>Tue 29</span><div class="ev ev-blue" style="--i:5"><span>Run P0 regression tests</span></div></div>
-              <div class="vc-day"><span>Wed 30</span></div>
-              <div class="vc-day"><span>Thu 1</span></div>
+            <div class="cal-head"><b>September 2026</b><span class="cal-nav"><i>‹</i>Today<i>›</i></span><span class="mini-seg"><i class="on">Month</i><i>Week</i><i>Day</i></span></div>
+            <div class="month-dow"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+            <div class="month-grid">
+              <div class="mcell dim"><span class="dnum">30</span></div><div class="mcell dim"><span class="dnum">31</span></div><div class="mcell"><span class="dnum">1</span></div><div class="mcell"><span class="dnum">2</span></div><div class="mcell"><span class="dnum">3</span></div><div class="mcell"><span class="dnum">4</span></div><div class="mcell"><span class="dnum">5</span></div>
+              <div class="mcell"><span class="dnum">6</span></div><div class="mcell"><span class="dnum">7</span></div><div class="mcell"><span class="dnum">8</span></div><div class="mcell"><span class="dnum">9</span></div><div class="mcell"><span class="dnum">10</span></div><div class="mcell"><span class="dnum">11</span></div><div class="mcell"><span class="dnum">12</span></div>
+              <div class="mcell"><span class="dnum">13</span></div><div class="mcell"><span class="dnum">14</span></div><div class="mcell"><span class="dnum">15</span></div><div class="mcell"><span class="dnum">16</span></div><div class="mcell"><span class="dnum">17</span></div><div class="mcell"><span class="dnum">18</span></div><div class="mcell"><span class="dnum">19</span></div>
+              <div class="mcell"><span class="dnum">20</span></div><div class="mcell"><span class="dnum">21</span></div><div class="mcell"><span class="dnum">22</span></div><div class="mcell"><span class="dnum">23</span></div><div class="mcell"><span class="dnum">24</span></div><div class="mcell"><span class="dnum">25</span></div><div class="mcell"><span class="dnum">26</span><span class="ev-chip"><i class="cb"></i><span>Aggregate invite-channel data</span></span></div>
+              <div class="mcell today"><span class="dnum">27</span><span class="ev-chip"><i class="cb"></i><span>Confirm the final launch checklist</span></span></div><div class="mcell"><span class="dnum">28</span><span class="ev-chip"><i class="cb"></i><span>Freeze code and bump the version</span></span><span class="ev-chip"><i class="cb"></i><span>Follow up on the analytics regression</span></span><span class="mcell-more-hint">2 more…</span></div><div class="mcell"><span class="dnum">29</span><span class="ev-chip"><i class="cb"></i><span>Publish release notes and announcements</span></span><span class="ev-chip"><i class="cb"></i><span>Watch crash and sync metrics</span></span><span class="mcell-more-hint">2 more…</span></div><div class="mcell"><span class="dnum">30</span><span class="ev-chip"><i class="cb"></i><span>Build and sign the release packages</span></span><span class="ev-chip"><i class="cb"></i><span>Regression-test all P0 cases</span></span></div><div class="mcell dim"><span class="dnum">1</span></div><div class="mcell dim"><span class="dnum">2</span></div><div class="mcell dim"><span class="dnum">3</span></div>
             </div>
           </div>
 
           <div class="view view-quad" id="view-quad" role="tabpanel" aria-labelledby="tab-quad" hidden>
-            <div class="vq q1"><h4><i></i>Urgent &amp; important</h4><div class="vq-item" style="--i:0">Summarize invite-code channel data</div><div class="vq-item" style="--i:1">Finalize release checklist</div></div>
-            <div class="vq q2"><h4><i></i>Important, not urgent</h4><div class="vq-item" style="--i:2">Run all P0 regression tests</div><div class="vq-item" style="--i:3">Call Mom</div></div>
-            <div class="vq q3"><h4><i></i>Urgent, not important</h4><div class="vq-item" style="--i:4">Update download page copy</div></div>
-            <div class="vq q4"><h4><i></i>Neither</h4><div class="vq-item" style="--i:5">Draft dark-mode icon set</div></div>
+            <div class="quadrant-cell q1"><div class="quadrant-head"><i></i><h4>Urgent &amp; Important</h4><small>Do now</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>Confirm the final launch checklist</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/27</span><span class="tag">#Product</span></div></div></div><div class="task"><span class="check"></span><div><b>Freeze code and bump the version</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/28</span><span class="tag">#Launch</span></div></div></div><div class="task"><span class="check"></span><div><b>Build and sign the release packages</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/30</span><span class="tag">#Launch</span></div></div></div></div></div>
+            <div class="quadrant-cell q2"><div class="quadrant-head"><i></i><h4>Important, Not Urgent</h4><small>Schedule</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>Regression-test all P0 cases</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/30</span><span class="tag">#Dev</span></div></div></div><div class="task"><span class="check"></span><div><b>Explore dark-mode icon variants</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>10/04</span><span class="tag">#Design</span></div></div></div><div class="task"><span class="check"></span><div><b>Cluster user feedback topics</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span class="tag">#Product</span></div></div></div></div></div>
+            <div class="quadrant-cell q3"><div class="quadrant-head"><i></i><h4>Urgent, Not Important</h4><small>Delegate</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>Update the download page copy</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/28</span><span class="tag">#Growth</span></div></div></div><div class="task"><span class="check"></span><div><b>Publish release notes and announcements</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/29</span><span class="tag">#Launch</span></div></div></div><div class="task"><span class="check"></span><div><b>Follow up on the analytics regression</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/28</span><span class="tag">#Dev</span></div></div></div></div></div>
+            <div class="quadrant-cell q4"><div class="quadrant-head"><i></i><h4>Neither</h4><small>Drop it</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>Landing page A/B review</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/29</span><span class="tag">#Growth</span></div></div></div><div class="task"><span class="check"></span><div><b>Watch crash and sync metrics</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/29</span><span class="tag">#Dev</span></div></div></div><div class="task"><span class="check"></span><div><b>Draft the weekly changelog</b><div class="task-meta"><span class="sd"></span><span>Notes</span><span>09/29</span><span class="tag">#Growth</span></div></div></div></div></div>
           </div>
 
         </div>
@@ -303,12 +300,14 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <div class="seg seg-sm" role="tablist" aria-label="Screens">
         <button role="tab" aria-selected="true" data-shot="0">List</button>
         <button role="tab" aria-selected="false" data-shot="1" tabindex="-1">Calendar</button>
-        <button role="tab" aria-selected="false" data-shot="2" tabindex="-1">AI</button>
+        <button role="tab" aria-selected="false" data-shot="2" tabindex="-1">Quadrant</button>
+        <button role="tab" aria-selected="false" data-shot="3" tabindex="-1">AI</button>
         <span class="seg-ind" aria-hidden="true"></span>
       </div>
       <div class="shot shot-lg tour-stage">
-        <img class="is-active" src="assets/img/app/tasks-en.webp" width="1280" height="800" alt="List view: tasks grouped into Overdue, Today, Tomorrow and This week, with smart lists and tags in the sidebar" loading="lazy" />
+        <img class="is-active" src="assets/img/app/tasks-en.webp" width="1920" height="1200" alt="List view: tasks grouped into Overdue, Today, Tomorrow and This week, with smart lists and tags in the sidebar" loading="lazy" />
         <img src="assets/img/app/calendar-en.webp" width="1280" height="800" alt="Calendar view: tasks laid out by date" loading="lazy" />
+        <img src="assets/img/app/quadrant-en.webp" width="1920" height="1070" alt="Quadrant view: tasks sorted into Urgent &amp; Important, Important Not Urgent, Urgent Not Important and Neither" loading="lazy" />
         <img src="assets/img/app/agent-en.webp" width="1280" height="800" alt="AI view: scattered information organized into tasks" loading="lazy" />
       </div>
     </div>

@@ -242,12 +242,12 @@ function initTabs(container, { onSelect, autoMs } = {}) {
   if (auto) {
     const vis = watchVisibility(container);
     (async () => {
-      await sleep(autoMs);
-      while (auto) {
+      // 只自动轮播一圈（回到第一个视图后停下），避免无限循环的装饰性动效
+      for (let step = 0; step < tabs.length && auto; step++) {
+        await sleep(autoMs);
         await vis.until();
         if (!auto) break;
         select(current + 1);
-        await sleep(autoMs);
       }
     })();
   }
@@ -257,12 +257,12 @@ function initViews(el) {
   const panels = [...el.querySelectorAll('.view')];
   initTabs(el, {
     autoMs: 4200,
+    // 与 App 视图切换一致：200ms 交叉淡入（过渡写在 CSS 的 .view / .view.is-active 上）
     onSelect(i) {
       panels.forEach((p, k) => {
-        p.classList.remove('is-active');
         p.hidden = k !== i;
+        p.classList.toggle('is-active', k === i);
       });
-      requestAnimationFrame(() => requestAnimationFrame(() => panels[i].classList.add('is-active')));
     },
   });
 }

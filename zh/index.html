@@ -103,9 +103,9 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
           <div class="md">
             <div class="md-line md-h">本周计划</div>
             <div class="md-line md-p">发布节奏参考 <span class="noteref">发布日检查清单</span></div>
-            <div class="md-line md-task" data-id="a"><span class="nt">确认发布清单终稿 <span class="md-date">今天 10:00</span></span> <span class="md-tag">#产品</span></div>
-            <div class="md-line md-task" data-id="b"><span class="nt">回归测试全部 P0 用例 <span class="md-date">周四</span></span> <span class="md-tag">#开发</span></div>
-            <div class="md-line md-task md-new" data-id="c"><template><span class="nt">给妈妈回电话 <span class="md-date">周五</span></span> <span class="md-tag">#家庭</span></template><span class="md-typed"></span><span class="caret"></span></div>
+            <div class="md-line md-task" data-id="a"><span class="nt strike">确认发布清单终稿 <span class="md-date">今天 10:00</span></span> <span class="md-tag">#产品</span></div>
+            <div class="md-line md-task" data-id="b"><span class="nt strike">回归测试全部 P0 用例 <span class="md-date">周三</span></span> <span class="md-tag">#开发</span></div>
+            <div class="md-line md-task md-new" data-id="c"><template><span class="nt strike">给妈妈回电话 <span class="md-date">周五</span></span> <span class="md-tag">#家庭</span></template><span class="md-typed"></span><span class="caret"></span></div>
             <div class="md-refs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></svg>被引用 · 2<span class="refchip">周一站会纪要</span><span class="refchip">季度 OKR 摘要</span></div>
           </div>
         </div>
@@ -125,16 +125,16 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
           </div>
           <ul class="tlist">
             <li data-id="a">
-              <span class="check"></span>
-              <div><b>确认发布清单终稿</b><small><em>今天 10:00</em><span class="tag">#产品</span><span class="src">本周计划</span></small></div>
+              <span class="check c-orange"></span>
+              <div><b class="strike">确认发布清单终稿</b><small><span class="sd"></span><em>09/27 10:00</em><span class="tag">#产品</span></small></div>
             </li>
             <li data-id="b">
               <span class="check"></span>
-              <div><b>回归测试全部 P0 用例</b><small><em>周四</em><span class="tag">#开发</span><span class="src">本周计划</span></small></div>
+              <div><b class="strike">回归测试全部 P0 用例</b><small><span class="sd"></span><em>09/30</em><span class="tag">#开发</span></small></div>
             </li>
             <li data-id="c" class="is-new">
               <span class="check"></span>
-              <div><b>给妈妈回电话</b><small><em>周五</em><span class="tag">#家庭</span><span class="src">本周计划</span></small></div>
+              <div><b class="strike">给妈妈回电话</b><small><span class="sd"></span><em>10/02</em><span class="tag">#家庭</span></small></div>
             </li>
           </ul>
         </div>
@@ -185,7 +185,7 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <div class="feature-copy reveal">
         <span class="kicker">02 · AI 整理</span>
         <h3>粘贴一段话，拿回一串待办</h3>
-        <p>会议纪要、聊天记录、文章片段，直接粘进来。AI 识别其中的任务、截止日期和标签，<strong>你确认后才会写入</strong>笔记。</p>
+        <p>会议纪要、聊天记录、文章片段，直接粘进来。AI 识别其中的任务、截止日期和标签，<strong>你确认后才会保存</strong>。</p>
         <ul class="ticks">
           <li>自动提取任务与截止日期</li>
           <li>智能打标签、关联相关笔记</li>
@@ -194,27 +194,31 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
         </ul>
       </div>
       <figure class="feature-media reveal" style="--d:.1s">
-        <div class="app-window demo-ai" data-demo="ai" role="img" aria-label="演示：粘贴会议纪要后，AI 识别出三条带日期和标签的任务，确认后写入笔记">
+        <div class="app-window demo-ai" data-demo="ai" role="img" aria-label="演示：粘贴会议纪要后，AI 整理出三条带日期的任务草稿，确认保存后加入清单">
           <div class="win-bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="win-title">AI 整理</span></div>
           <div class="ai-body" aria-hidden="true">
-            <div class="msg msg-user">
+            <div class="msg-user">
               <span class="msg-label">周会纪要</span>
-              下周三前小林出首页改版稿；周五和法务确认隐私条款；月底前完成 v2.1 发布，发布前记得回归测试。
+              周三前小林出首页改版稿；周五和法务确认隐私条款；月底前完成 v2.1 发布，发布前记得回归测试。
             </div>
-            <div class="msg msg-ai">
+            <div class="msg-ai">
               <span class="spark"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span>
-              <span class="thinking">正在识别任务<i></i><i></i><i></i></span>
-              <span class="found">识别到 3 条任务</span>
+              <span class="thinking">正在整理<i></i><i></i><i></i></span>
+              <span class="found">整理好了，识别到 3 条任务</span>
             </div>
-            <div class="ai-cards">
-              <div class="ai-card" style="--i:0"><span class="check"></span><b>输出首页改版设计稿</b><em>下周三</em><span class="tag">#设计</span></div>
-              <div class="ai-card" style="--i:1"><span class="check"></span><b>与法务确认隐私条款</b><em>周五</em><span class="tag">#法务</span></div>
-              <div class="ai-card" style="--i:2"><span class="check"></span><b>完成 v2.1 发布与回归测试</b><em>9月30日</em><span class="tag">#发布</span></div>
-            </div>
-            <div class="ai-actions">
-              <span class="fake-btn">确认写入</span>
-              <span class="ai-dest">写入 周会纪要</span>
-              <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>已写入 3 条任务</span>
+            <div class="ai-draft">
+              <div class="ai-draft-title">周会纪要 · 待办整理</div>
+              <p class="ai-draft-summary">从纪要中识别出 3 条任务，已补上日期；确认后写入清单。</p>
+              <div class="ai-cards">
+                <div class="ai-card"><span class="mini-box"></span><b>输出首页改版设计稿</b><em>任务 09/30</em><small>官网改版</small></div>
+                <div class="ai-card"><span class="mini-box"></span><b>与法务确认隐私条款</b><em>任务 10/02</em><small>工作</small></div>
+                <div class="ai-card"><span class="mini-box"></span><b>完成 v2.1 发布与回归测试</b><em>任务 09/30</em><small>发布冲刺</small></div>
+              </div>
+              <div class="ai-actions">
+                <span class="ai-toggle"><span class="mini-box off"></span>整理成笔记</span>
+                <span class="fake-btn"><span class="t-save">确认保存</span><span class="t-saved">已保存</span></span>
+                <span class="ai-done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>3 条任务已加入清单</span>
+              </div>
             </div>
           </div>
         </div>
@@ -245,44 +249,38 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
         <div class="views-stage">
 
           <div class="view view-list is-active" id="view-list" role="tabpanel" aria-labelledby="tab-list">
-            <div class="vl-group">
-              <h4>已逾期 <span>1</span></h4>
-              <div class="vl-row" style="--i:0"><span class="check"></span><b>邀请码渠道数据汇总</b><em class="late">已逾期 · 09/25</em><span class="tag">#增长</span></div>
-            </div>
-            <div class="vl-group">
-              <h4>今天 <span>2</span></h4>
-              <div class="vl-row" style="--i:1"><span class="check c-blue"></span><b>确认发布清单终稿</b><em>10:00</em><span class="tag">#产品</span></div>
-              <div class="vl-row" style="--i:2"><span class="check c-orange"></span><b>给妈妈回电话</b><em>18:30</em><span class="tag">#家庭</span></div>
-            </div>
-            <div class="vl-group">
-              <h4>本周 <span>3</span></h4>
-              <div class="vl-row" style="--i:3"><span class="check c-orange"></span><b>更新官网下载页文案</b><em>09/27</em><span class="tag">#增长</span></div>
-              <div class="vl-row" style="--i:4"><span class="check"></span><b>输出深色模式图标方案</b><em>09/28</em><span class="tag">#设计</span></div>
-              <div class="vl-row" style="--i:5"><span class="check c-blue"></span><b>回归测试全部 P0 用例</b><em>09/29</em><span class="tag">#开发</span></div>
-            </div>
+            <div class="group-h"><h4>已逾期</h4><span>1</span></div>
+            <div class="task"><span class="check"></span><div><b>邀请码渠道数据汇总</b><div class="task-meta"><span class="sd"></span><span class="late">已逾期 · 09/26</span><span class="tag">#增长</span></div></div></div>
+            <div class="group-h"><h4>今天</h4><span>1</span></div>
+            <div class="task"><span class="check c-orange"></span><div><b>确认发布清单终稿</b><div class="task-meta"><span class="sd"></span><span>09/27 10:00</span><span class="tag">#产品</span><span class="ex">视觉侧事项跟随 发布日检查清单 的节奏推进。</span></div></div></div>
+            <div class="group-h"><h4>明天</h4><span>5</span></div>
+            <div class="task"><span class="check c-orange"></span><div><b>更新官网下载页文案</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#增长</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>跟进数据埋点回归</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#开发</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>修正清单视图空态间距</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#设计</span></div></div></div>
+            <div class="task"><span class="check c-orange"></span><div><b>冻结代码与版本号</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#发布</span><span class="ex">发布当天按顺序执行，全部勾完才算发布完成。</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>输出深色模式图标方案</b><div class="task-meta"><span class="sd"></span><span>09/28</span><span class="tag">#设计</span></div></div></div>
+            <div class="group-h"><h4>本周</h4><span>6</span></div>
+            <div class="task"><span class="check"></span><div><b>撰写发布周报</b><div class="task-meta"><span class="sd"></span><span>09/29</span><span class="tag">#增长</span></div></div></div>
+            <div class="task"><span class="check"></span><div><b>观察崩溃与同步指标</b><div class="task-meta"><span class="sd"></span><span>09/29 18:00</span><span class="tag">#开发</span></div></div></div>
           </div>
 
           <div class="view view-cal" id="view-cal" role="tabpanel" aria-labelledby="tab-cal" hidden>
-            <div class="vc-head">
-              <b>2026 年 9 月</b>
-              <span class="vc-seg"><i>月</i><i class="on">周</i><i>日</i></span>
-            </div>
-            <div class="vc-grid">
-              <div class="vc-day"><span>周五 25</span><div class="ev ev-red" style="--i:0"><span>邀请码渠道数据汇总</span></div></div>
-              <div class="vc-day is-today"><span>周六 <b>26</b></span><div class="ev" style="--i:1"><i>10:00</i><span>确认发布清单终稿</span></div><div class="ev ev-orange" style="--i:2"><i>18:30</i><span>给妈妈回电话</span></div></div>
-              <div class="vc-day"><span>周日 27</span><div class="ev ev-orange" style="--i:3"><span>更新官网下载页文案</span></div></div>
-              <div class="vc-day"><span>周一 28</span><div class="ev" style="--i:4"><span>输出深色模式图标方案</span></div></div>
-              <div class="vc-day"><span>周二 29</span><div class="ev ev-blue" style="--i:5"><span>回归测试全部 P0 用例</span></div></div>
-              <div class="vc-day"><span>周三 30</span></div>
-              <div class="vc-day"><span>周四 1</span></div>
+            <div class="cal-head"><b>2026年9月</b><span class="cal-nav"><i>‹</i>今天<i>›</i></span><span class="mini-seg"><i class="on">月</i><i>周</i><i>日</i></span></div>
+            <div class="month-dow"><span>周日</span><span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span></div>
+            <div class="month-grid">
+              <div class="mcell dim"><span class="dnum">30</span></div><div class="mcell dim"><span class="dnum">31</span></div><div class="mcell"><span class="dnum">1</span></div><div class="mcell"><span class="dnum">2</span></div><div class="mcell"><span class="dnum">3</span></div><div class="mcell"><span class="dnum">4</span></div><div class="mcell"><span class="dnum">5</span></div>
+              <div class="mcell"><span class="dnum">6</span></div><div class="mcell"><span class="dnum">7</span></div><div class="mcell"><span class="dnum">8</span></div><div class="mcell"><span class="dnum">9</span></div><div class="mcell"><span class="dnum">10</span></div><div class="mcell"><span class="dnum">11</span></div><div class="mcell"><span class="dnum">12</span></div>
+              <div class="mcell"><span class="dnum">13</span></div><div class="mcell"><span class="dnum">14</span></div><div class="mcell"><span class="dnum">15</span></div><div class="mcell"><span class="dnum">16</span></div><div class="mcell"><span class="dnum">17</span></div><div class="mcell"><span class="dnum">18</span></div><div class="mcell"><span class="dnum">19</span></div>
+              <div class="mcell"><span class="dnum">20</span></div><div class="mcell"><span class="dnum">21</span></div><div class="mcell"><span class="dnum">22</span></div><div class="mcell"><span class="dnum">23</span></div><div class="mcell"><span class="dnum">24</span></div><div class="mcell"><span class="dnum">25</span></div><div class="mcell"><span class="dnum">26</span><span class="ev-chip"><i class="cb"></i><span>邀请码渠道数据汇总</span></span></div>
+              <div class="mcell today"><span class="dnum">27</span><span class="ev-chip"><i class="cb"></i><span>确认发布清单终稿</span></span></div><div class="mcell"><span class="dnum">28</span><span class="ev-chip"><i class="cb"></i><span>冻结代码与版本号</span></span><span class="ev-chip"><i class="cb"></i><span>跟进数据埋点回归</span></span><span class="mcell-more-hint">还有 3 项…</span></div><div class="mcell"><span class="dnum">29</span><span class="ev-chip"><i class="cb"></i><span>发布说明与社区公告</span></span><span class="ev-chip"><i class="cb"></i><span>观察崩溃与同步指标</span></span><span class="mcell-more-hint">还有 2 项…</span></div><div class="mcell"><span class="dnum">30</span><span class="ev-chip"><i class="cb"></i><span>构建并签名安装包</span></span><span class="ev-chip"><i class="cb"></i><span>回归测试全部 P0 用例</span></span></div><div class="mcell dim"><span class="dnum">1</span></div><div class="mcell dim"><span class="dnum">2</span></div><div class="mcell dim"><span class="dnum">3</span></div>
             </div>
           </div>
 
           <div class="view view-quad" id="view-quad" role="tabpanel" aria-labelledby="tab-quad" hidden>
-            <div class="vq q1"><h4><i></i>重要且紧急</h4><div class="vq-item" style="--i:0">邀请码渠道数据汇总</div><div class="vq-item" style="--i:1">确认发布清单终稿</div></div>
-            <div class="vq q2"><h4><i></i>重要不紧急</h4><div class="vq-item" style="--i:2">回归测试全部 P0 用例</div><div class="vq-item" style="--i:3">给妈妈回电话</div></div>
-            <div class="vq q3"><h4><i></i>紧急不重要</h4><div class="vq-item" style="--i:4">更新官网下载页文案</div></div>
-            <div class="vq q4"><h4><i></i>不重要不紧急</h4><div class="vq-item" style="--i:5">输出深色模式图标方案</div></div>
+            <div class="quadrant-cell q1"><div class="quadrant-head"><i></i><h4>重要且紧急</h4><small>立即做</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>确认发布清单终稿</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/27</span><span class="tag">#产品</span></div></div></div><div class="task"><span class="check"></span><div><b>冻结代码与版本号</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/28</span><span class="tag">#发布</span></div></div></div><div class="task"><span class="check"></span><div><b>构建并签名安装包</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/30</span><span class="tag">#发布</span></div></div></div></div></div>
+            <div class="quadrant-cell q2"><div class="quadrant-head"><i></i><h4>重要不紧急</h4><small>计划做</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>回归测试全部 P0 用例</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/30</span><span class="tag">#开发</span></div></div></div><div class="task"><span class="check"></span><div><b>输出深色模式图标方案</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/28</span><span class="tag">#设计</span></div></div></div><div class="task"><span class="check"></span><div><b>整理用户反馈专题</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span class="tag">#产品</span></div></div></div></div></div>
+            <div class="quadrant-cell q3"><div class="quadrant-head"><i></i><h4>紧急不重要</h4><small>尽量委托</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>更新官网下载页文案</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/28</span><span class="tag">#增长</span></div></div></div><div class="task"><span class="check"></span><div><b>发布说明与社区公告</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/29</span><span class="tag">#发布</span></div></div></div><div class="task"><span class="check"></span><div><b>跟进数据埋点回归</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/28</span><span class="tag">#开发</span></div></div></div></div></div>
+            <div class="quadrant-cell q4"><div class="quadrant-head"><i></i><h4>不重要不紧急</h4><small>可以不做</small><em>3</em></div><div class="quadrant-list"><div class="task"><span class="check"></span><div><b>落地页 A/B 实验复盘</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/29</span><span class="tag">#增长</span></div></div></div><div class="task"><span class="check"></span><div><b>观察崩溃与同步指标</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/29</span><span class="tag">#开发</span></div></div></div><div class="task"><span class="check"></span><div><b>撰写发布周报</b><div class="task-meta"><span class="sd"></span><span>笔记</span><span>09/29</span><span class="tag">#增长</span></div></div></div></div></div>
           </div>
 
         </div>
@@ -303,12 +301,14 @@ var d=document.documentElement;d.dataset.theme=t;if(location.protocol!=='file:')
       <div class="seg seg-sm" role="tablist" aria-label="界面">
         <button role="tab" aria-selected="true" data-shot="0">清单</button>
         <button role="tab" aria-selected="false" data-shot="1" tabindex="-1">笔记</button>
-        <button role="tab" aria-selected="false" data-shot="2" tabindex="-1">AI</button>
+        <button role="tab" aria-selected="false" data-shot="2" tabindex="-1">四象限</button>
+        <button role="tab" aria-selected="false" data-shot="3" tabindex="-1">AI</button>
         <span class="seg-ind" aria-hidden="true"></span>
       </div>
       <div class="shot shot-lg tour-stage">
         <img class="is-active" src="../assets/img/app/tasks-zh.webp" width="1280" height="800" alt="清单视图：已逾期、今天、明天、本周分组的任务，侧栏为智能列表与标签" loading="lazy" />
         <img src="../assets/img/app/notes-zh.webp" width="1280" height="800" alt="笔记视图：卡片流笔记，任务行与双向链接" loading="lazy" />
+        <img src="../assets/img/app/quadrant-zh.webp" width="1920" height="1070" alt="四象限视图：按重要且紧急、重要不紧急、紧急不重要、不重要不紧急分类任务" loading="lazy" />
         <img src="../assets/img/app/agent-zh.webp" width="1280" height="800" alt="AI 整理视图：把散落的信息整理成任务" loading="lazy" />
       </div>
     </div>
