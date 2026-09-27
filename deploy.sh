@@ -16,7 +16,7 @@ export CLOUDFLARE_API_TOKEN="$CLOUDFLARE_TOKEN"
 # 仓库根目录含 .venv/.claude/tools 等非站点文件，只打包站点白名单
 stage=$(mktemp -d /tmp/taskstick-deploy.XXXXXX)
 trap 'rm -rf "$stage"' EXIT
-rsync -a --exclude .DS_Store index.html download.html zh assets "$stage/"
+rsync -a --exclude .DS_Store index.html download.html privacy.html zh assets "$stage/"
 
 npx -y wrangler pages deploy "$stage" \
   --project-name=taskstick-site \
