@@ -2,5 +2,5 @@
   "workspaceId": "58a92668-e28d-4649-812c-2c22b6de1fb8",
   "defaultEnvironment": "prod",
   "gitBranchToEnvironmentMapping": null,
-  "domain": "http://localhost/api"
+  "domain": "http://carlos-1.tail46cf7f.ts.net:8080/api"
 }
