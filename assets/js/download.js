@@ -3,7 +3,7 @@ import { detectDownloadRecommendation } from './download-recommendation.mjs';
 /* ============================================================
    download.js — 官网下载中心
    自动高亮推荐安装包，同时保留所有手动选择入口。
-   macos-arm64 已上线 v1.0.1；macos-x64 及 Windows 仍为占位，发布时按同格式填入。
+   macos-arm64 已上线 v1.0.2；macos-x64 及 Windows 仍为占位，发布时按同格式填入。
    当前为单站双语部署：英文页在根目录、中文页在 zh/，
    共用此脚本，按 <html lang> 切换文案。
    ============================================================ */
@@ -22,9 +22,9 @@ const DOWNLOAD_ITEMS = {
       format: 'DMG',
       requirement: 'macOS 13+',
       architecture: 'Apple Silicon / arm64',
-      version: 'v1.0.1',
-      size: '5.4 MB',
-      href: 'https://releases.aigchelpus.com/releases/macos-arm64/1.0.1/Taskstick-1.0.1-arm64.dmg',
+      version: 'v1.0.2',
+      size: '6.3 MB',
+      href: 'https://releases.aigchelpus.com/releases/macos-arm64/1.0.2/Taskstick-1.0.2-arm64.dmg',
     },
     {
       id: 'macos-x64',
@@ -48,9 +48,9 @@ const DOWNLOAD_ITEMS = {
       format: 'DMG',
       requirement: 'macOS 13+',
       architecture: 'Apple Silicon / arm64',
-      version: 'v1.0.1',
-      size: '5.4 MB',
-      href: 'https://releases.aigchelpus.com/releases/macos-arm64/1.0.1/Taskstick-1.0.1-arm64.dmg',
+      version: 'v1.0.2',
+      size: '6.3 MB',
+      href: 'https://releases.aigchelpus.com/releases/macos-arm64/1.0.2/Taskstick-1.0.2-arm64.dmg',
     },
     {
       id: 'macos-x64',
