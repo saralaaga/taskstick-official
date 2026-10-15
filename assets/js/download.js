@@ -3,7 +3,7 @@ import { detectDownloadRecommendation } from './download-recommendation.mjs';
 /* ============================================================
    download.js — 官网下载中心
    自动高亮推荐安装包，同时保留所有手动选择入口。
-   macos-arm64 已上线 v1.1.0；macos-x64 及 Windows 仍为占位，发布时按同格式填入。
+   macos-arm64 已上线 v2.0.0；macos-x64 及 Windows 仍为占位，发布时按同格式填入。
    当前为单站双语部署：英文页在根目录、中文页在 zh/，
    共用此脚本，按 <html lang> 切换文案。
    ============================================================ */
@@ -22,9 +22,9 @@ const DOWNLOAD_ITEMS = {
       format: 'DMG',
       requirement: 'macOS 13+',
       architecture: 'Apple Silicon / arm64',
-      version: 'v1.1.0',
+      version: 'v2.0.0',
       size: '4.7 MB',
-      href: 'https://releases.aigchelpus.com/releases/macos-arm64/1.1.0/Taskstick-1.1.0-arm64.dmg',
+      href: 'https://releases.aigchelpus.com/releases/macos-arm64/2.0.0/Taskstick-2.0.0-arm64.dmg',
     },
     {
       id: 'macos-x64',
@@ -48,9 +48,9 @@ const DOWNLOAD_ITEMS = {
       format: 'DMG',
       requirement: 'macOS 13+',
       architecture: 'Apple Silicon / arm64',
-      version: 'v1.1.0',
+      version: 'v2.0.0',
       size: '4.7 MB',
-      href: 'https://releases.aigchelpus.com/releases/macos-arm64/1.1.0/Taskstick-1.1.0-arm64.dmg',
+      href: 'https://releases.aigchelpus.com/releases/macos-arm64/2.0.0/Taskstick-2.0.0-arm64.dmg',
     },
     {
       id: 'macos-x64',
@@ -83,12 +83,14 @@ const STRINGS = LANG === 'en' ? {
   downloadPending: 'Download',
   downloadAria: (name) => `Download ${name}`,
   placeholderNote: (name) => `The “${name}” build isn't available yet — it's coming soon. Write to admin@taskstick.com to be notified.`,
+  installNote: 'After downloading, open the DMG and drag Taskstick into the Applications folder. If macOS blocks the first launch, click “Open Anyway” in System Settings → Privacy & Security.',
 } : {
   recommendBadge: '推荐',
   downloadRecommended: '下载推荐版本',
   downloadPending: '下载',
   downloadAria: (name) => `下载 ${name}`,
   placeholderNote: (name) => `「${name}」安装包即将开放下载。想第一时间收到通知，可写信到 admin@taskstick.com。`,
+  installNote: '下载后打开 DMG，把日事贴拖入「应用程序」文件夹即完成安装。首次打开若被系统拦截，请在 系统设置 → 隐私与安全性 中点「仍要打开」。',
 };
 
 async function initDownload() {
@@ -147,6 +149,7 @@ function renderDownloadCard(item, compact, recommendation) {
     <a class="btn ${isRecommended ? 'btn-primary' : 'btn-ghost'} download-link" href="${escapeAttr(item.href)}" ${item.href === PLACEHOLDER_URL ? 'data-download-placeholder="true" ' : ''}aria-label="${escapeAttr(STRINGS.downloadAria(item.name))}">
       ${isRecommended ? escapeHtml(STRINGS.downloadRecommended) : escapeHtml(STRINGS.downloadPending)}
     </a>
+    ${item.format === 'DMG' ? `<p class="download-install-hint" style="margin:10px 0 0;font-size:13px;line-height:1.6;opacity:.78;">${escapeHtml(STRINGS.installNote)}</p>` : ''}
   </article>`;
 }
 
