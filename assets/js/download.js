@@ -3,7 +3,7 @@ import { detectDownloadRecommendation } from './download-recommendation.mjs';
 /* ============================================================
    download.js — 官网下载中心
    自动高亮推荐安装包，同时保留所有手动选择入口。
-   macos-arm64 已上线 v2.0.0；macos-x64 及 Windows 仍为占位，发布时按同格式填入。
+   macos-arm64 已上线 v2.0.0（PKG 安装器，已公证）；macos-x64 及 Windows 仍为占位，发布时按同格式填入。
    当前为单站双语部署：英文页在根目录、中文页在 zh/，
    共用此脚本，按 <html lang> 切换文案。
    ============================================================ */
@@ -18,24 +18,12 @@ const DOWNLOAD_ITEMS = {
       id: 'macos-arm64',
       group: 'macOS',
       name: 'Mac Apple 芯片',
-      description: '适用于 M 系列芯片的 Mac，推荐大多数新款 Mac 用户选择。',
-      format: 'DMG',
-      requirement: 'macOS 13+',
-      architecture: 'Apple Silicon / arm64',
-      version: 'v2.0.0',
-      size: '4.7 MB',
-      href: 'https://releases.aigchelpus.com/releases/macos-arm64/2.0.0/Taskstick-2.0.0-arm64.dmg',
-    },
-    {
-      id: 'macos-arm64-pkg',
-      group: 'macOS',
-      name: 'Mac Apple 芯片（安装器）',
-      description: 'PKG 安装器版本：双击安装，自动装入「应用程序」，适合不熟悉 DMG 拖拽的用户。',
+      description: '适用于 M 系列芯片的 Mac，推荐大多数新款 Mac 用户选择。双击安装器，自动装入「应用程序」。',
       format: 'PKG',
       requirement: 'macOS 13+',
       architecture: 'Apple Silicon / arm64',
       version: 'v2.0.0',
-      size: '4.1 MB',
+      size: '3.4 MB',
       href: 'https://releases.aigchelpus.com/releases/macos-arm64/2.0.0/Taskstick-2.0.0-arm64.pkg',
     },
     {
@@ -43,7 +31,7 @@ const DOWNLOAD_ITEMS = {
       group: 'macOS',
       name: 'Mac Intel 芯片',
       description: '适用于 Intel 处理器的 Mac，适合较早机型或仍在使用 Intel 架构的设备。',
-      format: 'DMG',
+      format: 'PKG',
       requirement: 'macOS 13+',
       architecture: 'Intel / x64',
       version: '', // 发布时填入，例如 'v1.0.0'
@@ -56,24 +44,12 @@ const DOWNLOAD_ITEMS = {
       id: 'macos-arm64',
       group: 'macOS',
       name: 'Mac with Apple silicon',
-      description: 'For M-series Macs. Recommended for most recent Mac users.',
-      format: 'DMG',
-      requirement: 'macOS 13+',
-      architecture: 'Apple Silicon / arm64',
-      version: 'v2.0.0',
-      size: '4.7 MB',
-      href: 'https://releases.aigchelpus.com/releases/macos-arm64/2.0.0/Taskstick-2.0.0-arm64.dmg',
-    },
-    {
-      id: 'macos-arm64-pkg',
-      group: 'macOS',
-      name: 'Mac with Apple silicon (Installer)',
-      description: 'PKG installer: double-click to install — Taskstick lands in Applications automatically.',
+      description: 'For M-series Macs. Recommended for most recent Mac users. Double-click the installer — Taskstick lands in Applications automatically.',
       format: 'PKG',
       requirement: 'macOS 13+',
       architecture: 'Apple Silicon / arm64',
       version: 'v2.0.0',
-      size: '4.1 MB',
+      size: '3.4 MB',
       href: 'https://releases.aigchelpus.com/releases/macos-arm64/2.0.0/Taskstick-2.0.0-arm64.pkg',
     },
     {
@@ -81,7 +57,7 @@ const DOWNLOAD_ITEMS = {
       group: 'macOS',
       name: 'Mac with Intel chip',
       description: 'For Macs with an Intel processor — earlier models or Intel-based machines.',
-      format: 'DMG',
+      format: 'PKG',
       requirement: 'macOS 13+',
       architecture: 'Intel / x64',
       version: '',
@@ -107,14 +83,14 @@ const STRINGS = LANG === 'en' ? {
   downloadPending: 'Download',
   downloadAria: (name) => `Download ${name}`,
   placeholderNote: (name) => `The “${name}” build isn't available yet — it's coming soon. Write to admin@taskstick.com to be notified.`,
-  installNote: 'After downloading, open the DMG and drag Taskstick into the Applications folder. If macOS blocks the first launch, click “Open Anyway” in System Settings → Privacy & Security.',
+  installNote: 'After downloading, double-click the installer and follow the prompts — Taskstick will be installed to Applications.',
 } : {
   recommendBadge: '推荐',
   downloadRecommended: '下载推荐版本',
   downloadPending: '下载',
   downloadAria: (name) => `下载 ${name}`,
   placeholderNote: (name) => `「${name}」安装包即将开放下载。想第一时间收到通知，可写信到 admin@taskstick.com。`,
-  installNote: '下载后打开 DMG，把日事贴拖入「应用程序」文件夹即完成安装。首次打开若被系统拦截，请在 系统设置 → 隐私与安全性 中点「仍要打开」。',
+  installNote: '下载后双击安装器，按提示完成安装，日事贴会自动装入「应用程序」。',
 };
 
 async function initDownload() {
@@ -173,7 +149,7 @@ function renderDownloadCard(item, compact, recommendation) {
     <a class="btn ${isRecommended ? 'btn-primary' : 'btn-ghost'} download-link" href="${escapeAttr(item.href)}" ${item.href === PLACEHOLDER_URL ? 'data-download-placeholder="true" ' : ''}aria-label="${escapeAttr(STRINGS.downloadAria(item.name))}">
       ${isRecommended ? escapeHtml(STRINGS.downloadRecommended) : escapeHtml(STRINGS.downloadPending)}
     </a>
-    ${item.format === 'DMG' ? `<p class="download-install-hint" style="margin:10px 0 0;font-size:13px;line-height:1.6;opacity:.78;">${escapeHtml(STRINGS.installNote)}</p>` : ''}
+    ${item.format === 'PKG' ? `<p class="download-install-hint" style="margin:10px 0 0;font-size:13px;line-height:1.6;opacity:.78;">${escapeHtml(STRINGS.installNote)}</p>` : ''}
   </article>`;
 }
 
